@@ -1,0 +1,180 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.mtop{
+    margin-top: 100px;
+}
+.titel{
+    color: #fff;
+  }
+.titel2{
+    color: #5933aa;
+  }
+.titel3{
+    color: #ff6161;
+  }
+ .navSection{
+    background-color: #5933aa;   
+}
+.cloud-section{
+    background-color: #f3f3f3;   
+}
+.navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: .5rem;
+    padding-left: .5rem;
+    color: #fff;
+    font-weight: bold;
+    margin-right: 20px;
+  }
+
+.herosection{
+    background-image: url('../img/background6.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+ 
+}
+  .overly{
+    width: 100%;
+    height: 100%;
+
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+ 
+ .file-upload-container {
+  
+    border: 2px dashed #ffaa00;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+  }
+  
+  .file-upload-container input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .file-upload-container label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: white;
+  }
+  
+  .file-upload-container label p {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .file-upload-container label small {
+    font-size: 12px;
+    color: #aaa;
+  }
+  
+  .premium-link {
+    color: #ffaa00;
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  .premium-link:hover {
+    text-decoration: underline;
+  }
+  .spreed_logo{
+    width: 100px;
+    height: 100px;
+  }
+  .woman_img{
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: red;
+    overflow: hidden;
+  }
+  .cline_img{
+    width: 100%;
+    height: 100%;
+  }
+  .number1{
+        background-color: #5dd2a2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+  }
+  .conten1{
+        background-color: #35c68b;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+       flex-direction: column;
+       padding: 60px 30px;
+
+   }
+  .number2{
+        background-color: #ff8181;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+  }
+  .conten2{
+        background-color: #ff6161;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+       flex-direction: column;
+       padding: 60px 30px;
+
+   }
+  .number3{
+        background-color: #71a5c3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+  }
+  .conten3{
+        background-color: #21406a;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+       flex-direction: column;
+       padding: 60px 30px;
+
+   }
+   .footerSection{
+    background-color: #5933aa;   
+    padding: 100px 0;
+}
+   .footLogo{
+    width: 250px;
+   }
+   .app{
+    width: 150px;
+   }
+.person_login{
+    background-color: #fff;
+    border-radius: 50%;
+
+}
+.person_login{
+    width: 30px;
+    height: 30px;
+}
+  
