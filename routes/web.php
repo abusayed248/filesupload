@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Backend\Auth\MagicLinkController;
+use App\Http\Controllers\Auth\MagicLinkController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +14,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+
 Route::get('/', function () {
     return view('home');
 });
-Route::get('/login', [MagicLinkController::class, 'login']);
-Route::post('/login', [MagicLinkController::class, 'store'])->name('login');
+
+Route::post('/send-magic-link', [MagicLinkController::class, 'sendMagicLink'])->name('magic-link.send');
+Route::get('/magic-login/{token}', [MagicLinkController::class, 'loginWithMagicLink'])->name('magic-link.login');
+
+
+
+Route::middleware('guest')->group(function () {
+    Route::get('/magic-view', [MagicLinkController::class, 'magiLinkView'])->name('login');
+});
+
+Route::get('/logout', function () {
+    return redirect('magic-view');
+})->middleware('guest');
+
+Route::middleware('auth')->group(function() {
+    Route::get('/contact', [MagicLinkController::class, 'contactView'])->name('contact');
+    Route::middleware('auth.redirect')->post('/logout', [MagicLinkController::class, 'destroy']) ->name('logout');
+});
+
+
