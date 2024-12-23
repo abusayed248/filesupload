@@ -19,7 +19,7 @@ class MagicLinkController extends Controller
         return view(('contact'));
     }
     public function magiLinkView (){
-        return view(('auth.magic-link'));
+        return view(('login'));
     }
     // Send Magic Link to User's Email
     public function sendMagicLink(Request $request)
@@ -81,13 +81,5 @@ class MagicLinkController extends Controller
         return redirect('/');  // Redirect to the home page or any protected route
     }
 
-  public function destroy(Request $request)
-    {
-        auth()->logout();
-        $request->session()->invalidate();
 
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login');
-    }
 }

@@ -30,18 +30,10 @@
                     <img class="img-fluid" src="{{ asset('files') }}/img/person.webp" alt="">
                     </div>
                      @guest
-                      <a class="nav-link" href="{{ route('magic-view') }}">Login / Register</a>
+                      <a class="nav-link" href="{{ route('login') }}">Login / Register</a>
                     @endguest
                     @auth
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-
-                        <a href="route('logout')"
-                                onclick="event.preventDefault();
-                                            this.closest('form').submit();">
-                            {{ __('Log Out') }}
-                        </a>
-                    </form>
+                    <a class="nav-link" href="{{ route('login') }}">Log Out</a>
                     @endauth
 
                 </li>
