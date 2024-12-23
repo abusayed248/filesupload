@@ -98,6 +98,8 @@
     width: 100px;
     height: 100px;
   }
+  
+
   .woman_img{
     width: 150px;
     height: 150px;
@@ -177,4 +179,52 @@
     width: 30px;
     height: 30px;
 }
-  
+.validate{
+padding: 5px;
+  width: 70%;
+}
+.validate:focus-visible{
+  text-decoration: none;
+  outline: 0;
+  box-shadow: none !important;
+}
+  .icon{
+    width: 45px;
+  }
+  .title{
+    border-bottom: 1px solid #21406a;
+  }
+  .btn{
+    width: 60%;
+    background-color: #5933aa;
+    margin-top: 15px;
+    color: #fff;
+  }
+  .login_container{
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    padding: 15px 10px;
+    margin: 30px 10px;
+  }
+  navbar-toggler:focus{
+outline: none;
+border: none;
+  }
+ 
+  .navbar-toggler:focus {
+    text-decoration: none;
+    outline: 0;
+    box-shadow: none !important;
+  }
+  .navbar-toggler-icon {
+    background-image: url('https://easyupload.io/img/menu.png');  /* Path to your custom icon */
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 30px; /* Adjust the size of the icon */
+    height: 30px;
+  }
+  @media only screen and (max-width: 600px) {
+    .clo_img{
+width: 50%;
+    }
+  }
+ 

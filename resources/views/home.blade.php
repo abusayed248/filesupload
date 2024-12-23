@@ -77,8 +77,8 @@
     <section class="mtop cloud-section pt-5 pb-5">
         <div class="container">
             <div class="row align-items-center ">
-                <div class="col-md-2">
-                    <img class="img-fluid" src="{{ asset('files') }}/img/cloud.webp" alt="">
+                <div class="col-md-2 text-center">
+                    <img class="img-fluid  clo_img" src="{{ asset('files') }}/img/cloud.webp" alt="">
                 </div>
                 <div class="col-md-10">
                     <p>Upload any kind of file up to 10GB without any restriction or necessity to register. With the high speed easyupload.io servers, file upload will never be the same again. Register for free to keep track of your uploaded files or other advance features.</p>
@@ -88,13 +88,13 @@
                 <div class="col-md-10">
                     <p>Password-protect your uploaded files to keep your files secure. With access control, you will be sure that only the people you want can download your files.</p>
                 </div>
-                <div class="col-md-2">
-                    <img class="img-fluid" src="{{ asset('files') }}/img/l1ock.png" alt="">
+                <div class="col-md-2 text-center">
+                    <img class="img-fluid clo_img" src="{{ asset('files') }}/img/l1ock.png" alt="">
                 </div>
             </div>
             <div class="row align-items-center mtop">
-                <div class="col-md-2">
-                    <img class="img-fluid" src="{{ asset('files') }}/img/time.webp" alt="">
+                <div class="col-md-2 text-center">
+                    <img class="img-fluid clo_img" src="{{ asset('files') }}/img/time.webp" alt="">
                 </div>
                 <div class="col-md-10">
                     <p>With expire duration option, you can set your files to expire after some amount of time. This way, your files will only be on our servers for the duration you set. You can select durations of 7 days, 15 days, 30 days or unlimited days.</p>
@@ -104,8 +104,8 @@
                 <div class="col-md-10">
                 <p>Uploading your files is totally free. You can upload files up to 10 GB as a free user but your files can be stored for maximum 30 days if you are a free user. You can optionally purchase a premium account to increase file size and storage up to 500 GB and store them forever.</p>
                 </div>
-                <div class="col-md-2">
-                <img class="img-fluid" src="{{ asset('files') }}/img/pc.webp" alt="">
+                <div class="col-md-2 text-center">
+                <img class="img-fluid clo_img" src="{{ asset('files') }}/img/pc.webp" alt="">
                 </div>
                 
             </div>

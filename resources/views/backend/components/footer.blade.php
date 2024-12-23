@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="footLogo">
-                <img class="img-fluid" src="https://easyupload.io/img/logo.png" alt="">
+                <img class="img-fluid" src="{{ asset('files') }}/img/logo.webp" alt="">
                 </div>
             
                 <p class="titel">Easyupload.io offers free file upload and transfer service without limits. Upload files & share them with your friends and colleagues without time, download or bandwidth limit. Easyupload.io offers these services for free any without need of registration.</p>
@@ -19,8 +19,8 @@
             </div>
         </div>
         <div class="row">
-            <img class="app" src="https://easyupload.io/img/appstore.png" alt="">
-            <img class="app" src="https://easyupload.io/img/googleplay.png" alt="">
+            <img class="app" src="{{ asset('files') }}/img/appstore (1).webp" alt="">
+            <img class="app" src="{{ asset('files') }}/img/googleplay.webp" alt="">
         </div>
         <div class="row pt-3">
         <p class="titel text-center">Copyright &copy; 2024, easyupload.io - 0.00122 second</p>
