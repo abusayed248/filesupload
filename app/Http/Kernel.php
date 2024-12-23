@@ -53,6 +53,8 @@ class Kernel extends HttpKernel
 protected $routeMiddleware = [
     // Other middlewares...
     'check.magic.link' => \App\Http\Middleware\CheckMagicLink::class,
+    'auth.redirect' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,
+
 ];
     /**
      * The application's middleware aliases.

@@ -20,10 +20,23 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home');
 });
-Route::get('/', function () {return view('home');});
+
 Route::post('/send-magic-link', [MagicLinkController::class, 'sendMagicLink'])->name('magic-link.send');
 Route::get('/magic-login/{token}', [MagicLinkController::class, 'loginWithMagicLink'])->name('magic-link.login');
-Route::get('/magic-view}', [MagicLinkController::class, 'magiLinkView'])->name('login');
-Route::middleware('auth:sanctum')->get('/contact', [MagicLinkController::class, 'contactView'])->name('contact');
-Route::middleware('auth:sanctum')->post('logout', [MagicLinkController::class, 'destroy']) ->name('logout');
+
+
+
+Route::middleware('guest')->group(function () {
+    Route::get('/magic-view', [MagicLinkController::class, 'magiLinkView'])->name('login');
+});
+
+Route::get('/logout', function () {
+    return redirect('magic-view');
+})->middleware('guest');
+
+Route::middleware('auth')->group(function() {
+    Route::get('/contact', [MagicLinkController::class, 'contactView'])->name('contact');
+    Route::middleware('auth.redirect')->post('/logout', [MagicLinkController::class, 'destroy']) ->name('logout');
+});
+
 

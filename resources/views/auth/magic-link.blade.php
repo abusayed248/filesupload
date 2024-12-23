@@ -9,6 +9,18 @@
     <div class="row justify-content-center">
         <div class="col-md-5 login_container">
             <h5 class="title text-center pt-4 pb-4">Login</h5>
+
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+            @endif
+
             <form method="post" action="{{ route('magic-link.send') }}">
                 @csrf
 

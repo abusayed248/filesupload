@@ -32,8 +32,13 @@
                      @guest
                       <a class="nav-link" href="{{ route('login') }}">Login / Register</a>
                     @endguest
+                    
                     @auth
-                    <a class="nav-link" href="{{ route('login') }}">Log Out</a>
+                    <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log Out</a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                     @endauth
 
                 </li>
