@@ -21,6 +21,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+       
     ];
 
     /**
@@ -45,6 +46,14 @@ class Kernel extends HttpKernel
         ],
     ];
 
+
+
+    // app/Http/Kernel.php
+
+protected $routeMiddleware = [
+    // Other middlewares...
+    'check.magic.link' => \App\Http\Middleware\CheckMagicLink::class,
+];
     /**
      * The application's middleware aliases.
      *

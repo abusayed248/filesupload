@@ -9,7 +9,7 @@
     <div class="row justify-content-center">
         <div class="col-md-5 login_container">
             <h5 class="title text-center pt-4 pb-4">Login</h5>
-            <form method="post" action="{{ route('login') }}">
+            <form method="post" action="{{ route('magic-link.send') }}">
                 @csrf
 
                 <div class="row">

@@ -23,14 +23,27 @@
                     <a class="nav-link" href="#">How It Works</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact Us</a>
+                    <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>
                 </li>
-            
                 <li class="nav-item d-flex align-items-center">
                     <div class="person_login">
                     <img class="img-fluid" src="{{ asset('files') }}/img/person.webp" alt="">
                     </div>
-                    <a class="nav-link" href="{{ route('login') }}">Login / Register</a>
+                     @guest
+                      <a class="nav-link" href="{{ route('magic-view') }}">Login / Register</a>
+                    @endguest
+                    @auth
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <a href="route('logout')"
+                                onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </a>
+                    </form>
+                    @endauth
+
                 </li>
             
                 </ul>
