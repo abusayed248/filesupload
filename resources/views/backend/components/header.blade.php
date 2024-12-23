@@ -14,16 +14,16 @@
                     <a class="nav-link" href="https://www.dmca.com/compliance/easyupload.io"><img src="https://easyupload.io/img/dmca.png" alt=""></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">DMCA</a>
+                    <a class="nav-link" href="{{ route('dmca') }}">DMCA</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">FAQ</a>
+                    <a class="nav-link" href="#faq">FAQ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">How It Works</a>
+                    <a class="nav-link" href="#how_it_work">How It Works</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('contact') }}">Contact Us</a>
+                    <a class="nav-link" href="#">Contact Us</a>
                 </li>
                 <li class="nav-item d-flex align-items-center">
                     <div class="person_login">

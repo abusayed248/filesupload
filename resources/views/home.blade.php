@@ -40,7 +40,7 @@
         </div>
     </section>
 
-    <section class="mtop">
+    <section class="mtop" id="faq">
         <div class="container mt-5">
             <h1 class="text-center titel2">FAQ</h1>
             <div class="row">
@@ -74,7 +74,7 @@
         </div>
     </section>
 
-    <section class="mtop cloud-section pt-5 pb-5">
+    <section class="mtop cloud-section pt-5 pb-5" id="how_it_work">
         <div class="container">
             <div class="row align-items-center ">
                 <div class="col-md-2 text-center">

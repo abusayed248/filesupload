@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Mail;
 
 class MagicLinkController extends Controller
 {
-    public function contactView (){
-        return view('contact');
+    public function dmca (){
+        return view('dmca');
     }
     public function magiLinkView (){
         return view('auth.magic-link');

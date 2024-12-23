@@ -35,7 +35,7 @@ Route::get('/logout', function () {
 })->middleware('guest');
 
 Route::middleware('auth')->group(function() {
-    Route::get('/contact', [MagicLinkController::class, 'contactView'])->name('contact');
+    Route::get('/dmca', [MagicLinkController::class, 'dmca'])->name('dmca');
     Route::middleware('auth.redirect')->post('/logout', [MagicLinkController::class, 'destroy']) ->name('logout');
 });
 

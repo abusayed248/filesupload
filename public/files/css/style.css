@@ -3,6 +3,9 @@
     margin: 0;
     box-sizing: border-box;
 }
+html{
+  font-size: 15px;
+}
 .mtop{
     margin-top: 100px;
 }
@@ -228,3 +231,18 @@ width: 50%;
     }
   }
  
+
+  /* dmca css start */
+  .info-area {
+    padding: 20px 0;
+    color: #7a7a7a;
+  }
+  .info-area p{
+    font-size: 15px;
+  }
+  .dmca_header{
+    font-size: 1.64rem;
+    line-height: 110%;
+    margin: 1.0933333333rem 0 .656rem 0;
+  }
+  /* dmca css end */
