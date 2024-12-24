@@ -49,7 +49,7 @@
                     <p>Uploading your files is totally free. You can upload files up to 10 GB as a free user but your files can be stored for maximum 30 days if you are a free user. You can optionally purchase a premium account to increase file size and storage up to 1 TB and store them forever.</p>
                 </div>
                 <div class="col-md-4 p-5">
-                    <h4 class="text-center">What can I upload?</h4>
+                    <h4 class="text-center titel2">What can I upload?</h4>
                     <p>You can upload any file as long as they are legal. We are very strict about laws so any uploaded file that violates any law or our terms of use will be deleted immediately and your account will be closed without any notification.</p>
                 </div>
                 <div class="col-md-4 p-5">
@@ -117,7 +117,7 @@
             <div class="row">
             <div class="col-md-4 d-flex justify-content-center flex-column align-items-center p-3">
                 <div class="woman_img">
-                <img class="cline_img" src="{{ asset('files') }}/img/wn.jpg" alt="">
+                <img class="cline_img" src="{{ asset('files') }}/static_img/woman1.webp" alt="">
                 </div>
                 <h4 class="text-center titel3 pt-3 ">Veronica D.</h4>
                 <p class="pt-3 pb-3">Uploading your files is totally free. You can upload files up to 10 GB as a free user but your files can be stored for maximum 30 days if you are a free user. You can optionally purchase a premium account to increase file size and storage up to 500 GB and store them forever.</p>
@@ -125,17 +125,17 @@
             </div>
             <div class="col-md-4 d-flex justify-content-center flex-column align-items-center p-3">
                 <div class="woman_img">
-                <img class="cline_img" src="{{ asset('files') }}/img/wn.jpg" alt="">
+                <img class="cline_img" src="{{ asset('files') }}/static_img/man1.webp" alt="">
                 </div>
-                <h4 class="text-center titel3 pt-3 ">Veronica D.</h4>
+                <h4 class="text-center titel3 pt-3 ">Eva N.</h4>
                 <p class="pt-3 pb-3">Uploading your files is totally free. You can upload files up to 10 GB as a free user but your files can be stored for maximum 30 days if you are a free user. You can optionally purchase a premium account to increase file size and storage up to 500 GB and store them forever.</p>
                 <img src="./img/quote.webp" alt="" srcset="">
             </div>
             <div class="col-md-4 d-flex justify-content-center flex-column align-items-center p-3">
                 <div class="woman_img">
-                <img class="cline_img" src="{{ asset('files') }}/img/wn.jpg" alt="">
+                <img class="cline_img" src="{{ asset('files') }}//static_img/woman2.webp" alt="">
                 </div>
-                <h4 class="text-center titel3 pt-3 ">Veronica D.</h4>
+                <h4 class="text-center titel3 pt-3 ">Boris V.</h4>
                 <p class="pt-3 pb-3">Uploading your files is totally free. You can upload files up to 10 GB as a free user but your files can be stored for maximum 30 days if you are a free user. You can optionally purchase a premium account to increase file size and storage up to 500 GB and store them forever.</p>
                 <img src="{{ asset('files') }}/img/quote.webp" alt="" srcset="">
             </div>

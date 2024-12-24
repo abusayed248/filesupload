@@ -237,12 +237,25 @@ width: 50%;
     padding: 20px 0;
     color: #7a7a7a;
   }
+  .dmca_header {
+      position: relative;
+      font-size: 1.64rem;
+      line-height: 110%;
+      margin: 1.0933333333rem 0 1.999rem 0;
+  }
+
+  .dmca_header:after {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      background: #e5dddd;
+      content: "";
+      width: 100%;
+      height: 1px;
+      transform: translate(10px, 15px);
+  }
   .info-area p{
     font-size: 15px;
   }
-  .dmca_header{
-    font-size: 1.64rem;
-    line-height: 110%;
-    margin: 1.0933333333rem 0 .656rem 0;
-  }
+ 
   /* dmca css end */
