@@ -18,6 +18,9 @@ html{
 .titel3{
     color: #ff6161;
   }
+  .text-bold{
+    font-weight: bold;
+  }
  .navSection{
     background-color: #5933aa;   
 }
@@ -257,5 +260,22 @@ width: 50%;
   .info-area p{
     font-size: 15px;
   }
- 
+ .con_logo{
+  background: #5933aa;
+margin-bottom: 10px;
+ }
+ .border-right{
+  border-right: #213f6a3d solid 1px;
+ }
+ .input-border{
+  border: #5933aa 1px solid;
+ }
+ .form-control{
+  border: none !important;
+ }
+ .form-control:focus{
+  border: none !important;
+  box-shadow: none !important;
+
+ }
   /* dmca css end */

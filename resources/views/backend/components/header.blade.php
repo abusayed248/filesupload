@@ -23,7 +23,7 @@
                     <a class="nav-link" href="#how_it_work">How It Works</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact Us</a>
+                    <a class="nav-link" href="{{route('contact')}}">Contact Us</a>
                 </li>
                 <li class="nav-item d-flex align-items-center">
                     <div class="person_login">
