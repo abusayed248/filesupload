@@ -2,6 +2,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    color: #4b4343e1;
 }
 html{
   font-size: 15px;
@@ -9,24 +10,24 @@ html{
 .mtop{
     margin-top: 100px;
 }
-.titel{
-    color: #fff;
-  }
-.titel2{
-    color: #5933aa;
-  }
-.titel3{
-    color: #ff6161;
-  }
+  .titel{
+      color: #fff;
+    }
+  .titel2{
+      color: #5933aa;
+    }
+  .titel3{
+      color: #ff6161;
+    }
   .text-bold{
     font-weight: bold;
   }
- .navSection{
-    background-color: #5933aa;   
-}
-.cloud-section{
-    background-color: #f3f3f3;   
-}
+  .navSection {
+    background-color: #33aaa3e3;
+  }
+  .cloud-section{
+      background-color: #f3f3f3;   
+  }
 .navbar-expand-lg .navbar-nav .nav-link {
     padding-right: .5rem;
     padding-left: .5rem;
@@ -36,7 +37,7 @@ html{
   }
 
 .herosection{
-    background-image: url('../img/background6.jpg');
+    background-image: url('../static_img/counter-1.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -83,7 +84,8 @@ html{
     font-size: 16px;
     font-weight: bold;
     margin: 0;
-  }
+    color: white;
+}
   
   .file-upload-container label small {
     font-size: 12px;
@@ -119,57 +121,53 @@ html{
     height: 100%;
   }
   .number1{
-        background-color: #5dd2a2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        
-  }
-  .conten1{
-        background-color: #35c68b;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-       flex-direction: column;
-       padding: 60px 30px;
-
-   }
-  .number2{
-        background-color: #ff8181;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        
-  }
-  .conten2{
-        background-color: #ff6161;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-       flex-direction: column;
-       padding: 60px 30px;
-
-   }
-  .number3{
-        background-color: #71a5c3;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        
-  }
-  .conten3{
-        background-color: #21406a;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-       flex-direction: column;
-       padding: 60px 30px;
-
-   }
-   .footerSection{
-    background-color: #5933aa;   
-    padding: 100px 0;
+    background-color: #244c3c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+.conten1{
+    background-color: #35c68b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   flex-direction: column;
+   padding: 60px 30px;
+
+}
+.number2{
+    background-color: #494848;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.conten2{
+    background-color: #73231c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 60px 30px;
+}
+.number3{
+    background-color: #1a3545;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.conten3{
+    background-color: #21406a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   flex-direction: column;
+   padding: 60px 30px;
+
+}
+    .footerSection {
+      background-color: #33aaa3e3;
+      padding: 100px 0;
+    }
    .footLogo{
     width: 250px;
    }
@@ -202,7 +200,7 @@ padding: 5px;
   }
   .btn{
     width: 60%;
-    background-color: #5933aa;
+    background-color: #066572;
     margin-top: 15px;
     color: #fff;
   }
@@ -260,10 +258,10 @@ width: 50%;
   .info-area p{
     font-size: 15px;
   }
- .con_logo{
-  background: #5933aa;
-margin-bottom: 10px;
- }
+  .con_logo {
+    background: #33aaa3e3;
+    margin-bottom: 10px;
+}
  .border-right{
   border-right: #213f6a3d solid 1px;
  }
@@ -279,3 +277,12 @@ margin-bottom: 10px;
 
  }
   /* dmca css end */
+
+  /* terms start start */
+  .take_down_notice ol li {
+    border: none;
+    font-weight: 300;
+    font-size: 15px;
+    font-style: italic;
+  }
+  /* terms start end */

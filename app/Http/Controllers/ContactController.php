@@ -10,4 +10,15 @@ class ContactController extends Controller
    {
        return view('backend.pages.contact');
    }
+
+   // terms page
+   public function terms()
+   {
+       return view('backend.pages.terms');
+   }
+   // privacy page
+   public function privacy()
+   {
+       return view('backend.pages.privacy');
+   }
 }

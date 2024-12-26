@@ -1,7 +1,7 @@
 
 @extends('layouts.app')
 
-@section('title', '')
+@section('title', 'Contact')
 
 @section('content')
     <section class="">
@@ -11,7 +11,7 @@
                         <div class="mt-5 p-4">
                             <h5 class=" border-bottom pb-3">Contact Form</h5>
                             <p class="text-center"><span class="text-bold">For Abuse and Copyright Infringement Reports: </span>abuse@easyupload.io <br>
-                              <span class="text-bold">  For General Help: </span>support@easyupload.io</p>
+                              <span class="text-bold">  For General Help: </span>support@filesupload.io</p>
                                 <form class="gap-10">
                                     <div class="form-group">
                                         <label >Name</label>
@@ -36,7 +36,7 @@
                                       </div>
                                     </div>
                                    <div class="d-flex justify-content-lg-center">
-                                    <button type="submit" class="btn btn-primary ">Submit</button>
+                                    <button type="submit" class="btn btn-success ">Submit</button>
                                    </div>
                                 </form>
                         </div>
@@ -46,7 +46,7 @@
                           
                             <h5 class=" border-bottom pb-3">Contact Form</h5>
                             <div class="footLogo con_logo">
-                                <img class="img-fluid" src="{{ asset('files') }}/img/logo.webp" alt="">
+                                <img class="img-fluid" src="{{ asset('files') }}/static_img/File.png" alt="">
                             </div>
                             <p class="text-center">You can contact us using the mail addresses stated on the left side. You can also use the contact us form and send us a message directly. We will respond to abuse requests ASAP (up to at most 5 business days ) and all other inquiries in 5 business days.</p>
                             <div class="gap-10">
@@ -72,7 +72,7 @@
                                 </div>
                                 <div>
                                     <i class="fa-brands fa-twitter"></i>
-                                    <span class="text-bold">Twitter:</span><span>@easyupload_io</span>
+                                    <span class="text-bold">Twitter:</span><span>@filesupload_io</span>
                                 </div>
                             </div>
                               

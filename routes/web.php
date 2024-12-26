@@ -34,11 +34,13 @@ Route::middleware('guest')->group(function () {
 Route::get('/logout', function () {
     return redirect('magic-view');
 })->middleware('guest');
-Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 Route::middleware('auth')->group(function() {
     Route::middleware('auth.redirect')->post('/logout', [MagicLinkController::class, 'destroy']) ->name('logout');
 });
 
 
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/dmca', [MagicLinkController::class, 'dmca'])->name('dmca');
+Route::get('/terms', [ContactController::class, 'terms'])->name('terms');
+Route::get('/privacy', [ContactController::class, 'privacy'])->name('privacy');
