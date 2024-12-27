@@ -16,9 +16,9 @@ html{
   .titel2{
       color: #5933aa;
     }
-  .titel3{
-      color: #ff6161;
-    }
+    .titel3 {
+      color: #7f4cf3;
+  }
   .text-bold{
     font-weight: bold;
   }
@@ -51,15 +51,14 @@ html{
     padding-bottom: 50px;
   }
  
- .file-upload-container {
-  
-    border: 2px dashed #ffaa00;
+  .file-upload-container {
+    border: 2px dashed #00fff0;
     border-radius: 10px;
     text-align: center;
     position: relative;
     background-color: rgba(0, 0, 0, 0.6);
     padding: 20px;
-  }
+}
   
   .file-upload-container input[type="file"] {
     position: absolute;
@@ -93,7 +92,7 @@ html{
   }
   
   .premium-link {
-    color: #ffaa00;
+    color: #7f4cf3;
     text-decoration: none;
     font-size: 14px;
     margin-top: 10px;
@@ -108,13 +107,14 @@ html{
   }
   
 
-  .woman_img{
+  .woman_img {
     width: 150px;
     height: 150px;
     text-align: center;
     border-radius: 50%;
-    background-color: red;
+    /* background-color: #7f4cf3; */
     overflow: hidden;
+    border: 2px solid #7f4cf3;
   }
   .cline_img{
     width: 100%;
@@ -141,13 +141,13 @@ html{
     justify-content: center;
     align-items: center;
 }
-.conten2{
-    background-color: #73231c;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 60px 30px;
+.conten2 {
+	background-color: #7f4cf3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	padding: 60px 30px;
 }
 .number3{
     background-color: #1a3545;

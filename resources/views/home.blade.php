@@ -126,7 +126,7 @@
                 <h4 class="text-center titel3 pt-3 ">Veronica D.</h4>
                 <p class="pt-3 pb-3">Uploading files is absolutely free! As a free user, you can upload files up to 10 GB, which will be stored for up to 30 days. Want more? Upgrade to a premium account to enjoy increased storage up to 500 GB and keep your files saved forever.
                 </p>
-                <img src="./img/quote.webp" alt="" srcset="">
+                <img src="./img/quote.png" alt="" srcset="">
             </div>
             <div class="col-md-4 d-flex justify-content-center flex-column align-items-center p-3">
                 <div class="woman_img">
@@ -135,7 +135,7 @@
                 <h4 class="text-center titel3 pt-3 ">Eva N.</h4>
                 <p class="pt-3 pb-3">Uploading files is easy and free! Free users can upload files up to 10 GB, with a storage period of 30 days. Need more space and longer storage? Get a premium account for up to 500 GB and unlimited storage time.
                 </p>
-                <img src="./img/quote.webp" alt="" srcset="">
+                <img src="./img/quote.png" alt="" srcset="">
             </div>
             <div class="col-md-4 d-flex justify-content-center flex-column align-items-center p-3">
                 <div class="woman_img">
@@ -144,7 +144,7 @@
                     <h4 class="text-center titel3 pt-3 ">Boris V.</h4>
                     <p class="pt-3 pb-3">Yes, uploading files is free! Free users can upload files up to 10 GB, stored for 30 days. To unlock more features, a premium account offers file uploads up to 500 GB with permanent storage.
                     </p>
-                    <img src="{{ asset('files') }}/img/quote.webp" alt="" srcset="">
+                    <img src="{{ asset('files') }}/img/quote.png" alt="" srcset="">
                 </div>
             </div>
         </div>
