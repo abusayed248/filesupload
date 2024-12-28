@@ -71,7 +71,7 @@ class UploadController extends Controller
         if (!$fileUpload) {
             $fileUpload = FileUpload::create([
                 'name' => $request->name,
-                'password' => $request->password ? Hash::make($request->password) : null,
+                'password' => $request->password ? $request->password : null,
                 'expires_at' => $request->expiry_date,
             ]);
         }
@@ -151,7 +151,7 @@ class UploadController extends Controller
         $file->move($finalPath, $fileName);
 
         TrackFile::create([
-            'filepath' => asset('storage/' . $filePath.'/'.$fileName),
+            'filepath' => asset('storage/' . $filePath . '/' . $fileName),
             'file_upload_id' => $fileUpload->id,
         ]);
 

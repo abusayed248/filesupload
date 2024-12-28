@@ -6,9 +6,35 @@
 <section class="herosection">
     <div class="overly">
         <div class="container">
+
             <div class="">
-                <h1 class="text-center titel fw-bold">Files Uploaded Successfully</h1>
-                <p class="text-center titel">Click any of the links below to download your file or copy it to share.</p>
+                <h1 class="text-center titel fw-bold">Download the file</h1>
+                <p class="text-center titel">Click any of the links below to download your file.</p>
+
+
+
+                @php
+                // Calculate expiration status
+                $isExpired = false;
+                if (!is_null($fileUpload->expires_at)) {
+                $expirationTime = $fileUpload->expires_at; // Value in days (e.g., 1, 3, etc.)
+                $createdAt = \Carbon\Carbon::parse($fileUpload->created_at);
+                $expiryDate = $createdAt->addDays($expirationTime);
+                $isExpired = now()->greaterThan($expiryDate);
+                }
+                @endphp
+
+                @if($isExpired)
+                <!-- Download Links Section -->
+                <div class="d-flex justify-content-center mt-4">
+                    <div class="col-md-6 pt-4 pb-4 text-center">
+
+                        <span class="text-danger">Link has expired.</span>
+                    </div>
+                </div>
+                <!-- Expired Message -->
+
+                @else
 
                 <!-- Download Links Section -->
                 <div class="d-flex justify-content-center mt-4">
@@ -23,15 +49,13 @@
                                 Download File
                             </button>
                             <br><br>
-
-                            <!-- Copy Link Button -->
-                            <input type="text" value="{{ $fileUrl->filepath }}" readonly class="form-control mt-2" id="downloadUrl_{{ $loop->index }}">
-                            <button class="btn btn-secondary mt-2 copyLinkBtn" data-clipboard-target="#downloadUrl_{{ $loop->index }}">Copy Link</button>
                         </div>
                         @endforeach
                     </div>
                 </div>
+                @endif
             </div>
+
         </div>
     </div>
 </section>
@@ -45,7 +69,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input type="password" id="passwordInput" class="form-control" placeholder="Enter file password">
+                <input type="password" id="passwordInput"  class="form-control" style="border: 1px solid !important;"  placeholder="Enter file password">
                 <input type="hidden" id="downloadFilePath">
             </div>
             <div class="modal-footer">
