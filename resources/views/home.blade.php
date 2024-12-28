@@ -26,8 +26,7 @@
                     <h1 class="text-center titel fw-bold">Upload files, transfer them easily</h1>
                     <p class="text-center titel">File upload made easy. Upload files up to 20GB and transfer files easily</p>
                     <div class="d-flex justify-content-center mt-4">
-                        <div class="file-upload-container col-md-5 pt-4 pb-4">
-
+                        <div class="file-upload-container col-md-5 pt-4 pb-4" id="browseFile" style="cursor: pointer">
 
                             <div class="card-body">
                                 <div id="upload-container" class="text-center">
@@ -77,7 +76,7 @@
                             </div>
 
 
-                            <label for="file-upload">
+                            <label for="file-upload" style="cursor: pointer">
                                 <p>Click here or drop files to upload or transfer</p>
                                 <small>(Max 50 files, 10 GB per file, total 100 GB)</small>
                                 <br />
@@ -326,7 +325,7 @@
         </div>
         </div>
     </section>
-    <div class="container pt-4">
+    {{-- <div class="container pt-4">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -353,7 +352,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     @include('backend.components.footer')
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

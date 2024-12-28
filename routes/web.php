@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Backend\FileUploadController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\Backend\Auth\MagicLinkController;
 
 Route::get('/', function () {
     return view('home');
+    \Artisan::call('storage:link');
 })->name('home');
 
 Route::post('/send-magic-link', [MagicLinkController::class, 'sendMagicLink'])->name('magic-link.send');
