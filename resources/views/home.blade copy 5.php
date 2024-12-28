@@ -52,19 +52,12 @@
                             </div>
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">File Password (Leave blank for public)</label>
-                                    <input type="password" class="form-control" id="password">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="expiryDate" class="form-label">Expiry Date</label>
-                                    <select class="form-select" id="expiryDate" name="userExpiryDate">
-                                        <option value="1">1 Day</option>
-                                        <option value="3">3 Days</option>
-                                        <option value="7">7 Days</option>
-                                        <option value="15">15 Days</option>
-                                        <option value="30">30 Days</option>
-                                        <option value="never">Never</option>
-                                    </select>
+                                    <input type="date" class="form-control" id="expiryDate" required>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -77,36 +70,30 @@
             </div>
         </div>
     </div>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script type="text/javascript">
         let browseFile = $('#browseFile');
-        let selectedFilesCount = 0;
-        let totalFiles = 0;
-        let filesUploaded = 0;
+        let selectedFilesCount = 0; // Variable to track the number of files selected
+        var totalFiles = 0; // Variable to track the total number of files added
+        let filesUploaded = 0; // Variable to track how many files have been uploaded successfully
         let filePaths = [];
-        let userPassword = '';
-        let userExpiryDate = '';
-        var uniqueString = Math.random().toString(36).substr(2, 8); // Generate unique 8-character string
-
-
-        // Initialize Resumable.js
         var r = new Resumable({
-            target: '{{ route('upload.store') }}',
-            
+            target: '{{ route('
+            upload.store ') }}',
+
+
+
+
+
 
 
 
             query: {
                 _token: '{{ csrf_token() }}',
-
+                name: 'Saidur'
             },
             fileType: ['png', 'jpg', 'jpeg', 'mp4', 'zip'],
-            chunkSize: 2 * 1024 * 1024, // 2 MB chunks
+            chunkSize: 2 * 1024 * 1024, // default is 1*1024*1024, this should be less than your maximum limit in php.ini
             headers: {
                 'Accept': 'application/json'
             },
@@ -116,63 +103,48 @@
 
         r.assignBrowse(browseFile[0]);
 
-        // Show the modal when a file is added
         r.on('fileAdded', function(files) {
             totalFiles = r.files.length;
-            $('#uploadModal').modal('show'); // Show the modal to get user input
-        });
+            showProgress();
+            r.upload();
 
-        // Handle the Start Upload button click
-        $('#startUpload').on('click', function() {
-            userPassword = $('#password').val();
-            userExpiryDate = $('#expiryDate').val();
-
-            // Check if both fields are filled
-
-            // Pass the password and expiry date as part of the upload
-            r.opts.query.password = userPassword;
-            r.opts.query.expiry_date = userExpiryDate;
-            r.opts.query.name = uniqueString
-
-
-            $('#uploadModal').modal('hide'); // Close the modal
-
-            showProgress(); // Show the upload progress
-            r.upload(); // Start the upload
 
         });
+        // Function to log the total files count
+        function logTotalFiles() {
+            console.log('Total Files: ', totalFiles); // Log total files count
+        }
 
-        // File progress event
+        // Call the log function after a short delay to ensure files are added first
+        setTimeout(logTotalFiles, 10000);
+
         r.on('fileProgress', function(file) {
             updateProgress(Math.floor(file.progress() * 100));
         });
 
-        // File success event
         r.on('fileSuccess', function(file, response) {
             response = JSON.parse(response);
             filesUploaded++; // Increment when a file upload is successful
             filePaths.push(response.path + '/' + response.name);
 
+            // Check if all files have been uploaded
             if (filesUploaded === totalFiles) {
-
                 console.log('All files have been uploaded.');
-
-                const downloadLink = `/get/link/${response.fileUpload_name}`;
-
-               window.location.href = downloadLink;
-
+                saveFilePathsToServer(filePaths);
 
             }
-
+            // Create a download button and copy path button
             const filePreview = document.createElement('div');
             filePreview.classList.add('col-md-4', 'mb-3');
 
+            // Download Button
             const downloadBtn = document.createElement('a');
             downloadBtn.href = response.path + '/' + response.name;
             downloadBtn.classList.add('btn', 'btn-success', 'w-100');
-            downloadBtn.setAttribute('download', response.name);
+            downloadBtn.setAttribute('download', response.name); // Trigger download on click
             downloadBtn.innerHTML = 'Download';
 
+            // Copy File Path Button
             const copyBtn = document.createElement('button');
             copyBtn.classList.add('btn', 'btn-info', 'w-100', 'mt-2');
             copyBtn.innerHTML = 'Copy Path';
@@ -182,10 +154,12 @@
                     .catch(err => alert('Error copying path: ' + err));
             };
 
+            // Append buttons to file preview container
             filePreview.appendChild(downloadBtn);
             filePreview.appendChild(copyBtn);
 
             document.getElementById('filePreviews').appendChild(filePreview);
+
             $('.card-footer').show();
         });
 
@@ -193,7 +167,6 @@
             alert('File uploading error.');
         });
 
-        // Show the upload progress bar
         let progress = $('.progress');
 
         function showProgress() {
@@ -205,11 +178,12 @@
 
         function saveFilePathsToServer(filePaths) {
             $.ajax({
-                url: '{{ route('store.filepaths') }}',
-            
+                url: '{{ route('
+                store.filepaths ') }}',
+                // Your backend route to store the file paths
                 method: 'POST',
                 data: {
-                    _token: '{{ csrf_token() }}',
+                    _token: '{{ csrf_token() }}', // CSRF token for security
                     file_paths: filePaths
                 },
                 success: function(response) {
@@ -222,11 +196,17 @@
         }
 
         function updateProgress(value) {
-            progress.find('.progress-bar').css('width', `${value}%`);
-            progress.find('.progress-bar').html(`${value}%`);
+            progress.find('.progress-bar').css('width', `${value}%`)
+            progress.find('.progress-bar').html(`${value}%`)
+
             if (value === 100) {
                 progress.find('.progress-bar').addClass('bg-success');
+                console.log('okkk');
             }
+        }
+
+        function hideProgress() {
+            progress.hide();
         }
     </script>
 
