@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('phone')->unique()->nullable();
             $table->string('photo')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('subscription_date')->nullable();
             $table->string('login_token')->nullable();
             $table->string('password')->nullable();
             $table->string('verify_token')->nullable();
@@ -25,7 +26,7 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      */

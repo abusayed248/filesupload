@@ -26,7 +26,8 @@
                     <h1 class="text-center titel fw-bold">Upload files, transfer them easily</h1>
                     <p class="text-center titel">File upload made easy. Upload files up to 20GB and transfer files easily</p>
                     <div class="d-flex justify-content-center mt-4">
-                        <div class="file-upload-container col-md-5 pt-4 pb-4" id="browseFile" style="cursor: pointer">
+                        <div class="file-upload-container col-md-5 pt-4 pb-4">
+
 
                             <div class="card-body">
                                 <div id="upload-container" class="text-center">
@@ -76,7 +77,7 @@
                             </div>
 
 
-                            <label for="file-upload" style="cursor: pointer">
+                            <label for="file-upload">
                                 <p>Click here or drop files to upload or transfer</p>
                                 <small>(Max 50 files, 10 GB per file, total 100 GB)</small>
                                 <br />
@@ -102,7 +103,6 @@
             </div>
         </div>
     </section>
-
     <section class="mtop" id="faq">
         <div class="container mt-5">
             <h1 class="text-center titel2">FAQ</h1>
@@ -138,7 +138,6 @@
             </div>
         </div>
     </section>
-
     <section class="mtop cloud-section pt-5 pb-5" id="how_it_work">
         <div class="container">
             <div class="row align-items-center ">
@@ -178,7 +177,6 @@
             </div>
         </div>
     </section>
-
     <section class="mtop">
         <div class="container">
             <div class="row">
@@ -212,9 +210,6 @@
             </div>
         </div>
     </section>
-
-
-
     <section class="mtop cloud-section">
         <div class="container">
             <div class="row justify-content-center">
@@ -255,8 +250,6 @@
             </div>
         </div>
     </section>
-
-
     <section class="mtop">
         <div class="container">
             <h3 class="text-center">Latest News</h3>
@@ -325,7 +318,7 @@
         </div>
         </div>
     </section>
-    {{-- <div class="container pt-4">
+    <div class="container pt-4">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -352,7 +345,7 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
     @include('backend.components.footer')
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -369,12 +362,14 @@
         let userPassword = '';
         let totalSize = 0; //
         let userExpiryDate = '';
-        var uniqueString = Math.random().toString(36).substr(2, 8); // Generate unique 8-character string
+        var uniqueString = Math.random().toString(36).substr(2, 8); 
+        const paymentPageUrl = "{{ route('payment.page') }}";
 
 
         // Initialize Resumable.js
         var r = new Resumable({
             target: '{{ route('upload.store') }}',
+            
             query: {
                 _token: '{{ csrf_token() }}',
             },
@@ -409,8 +404,35 @@
             $('#uploadModal').modal('hide'); // Close the modal
             const totalSizeInGB = (totalSize / (1024 * 1024 * 1024)).toFixed(2);
             if (totalSizeInGB > 1) {
-                r.pause();
-                $('#errorMessage').text('The total file size exceeds 20GB. Please upgrade plan for upload more than 20GB.').show();
+
+
+                $.ajax({
+                    url: '{{ route('subscription.check') }}', // Replace with your route to check subscription
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+            },
+                    success: function(response) {
+                        if (response.isSubscribed) {
+                            console.log(response.isSubscribed,'response.isSubscribed');
+                            // User is subscribed, proceed with upload
+                            showProgress(); // Show the upload progress
+                            r.upload(); // Start the upload
+                        } else {
+                            r.pause();
+                            // User is not subscribed, show error message
+                            $('#errorMessage').text('The total file size exceeds 1GB. Please subscribe to upload larger files.').show();
+                            window.location.href = paymentPageUrl;
+                        }
+                    },
+                    error: function() {
+                        r.pause();
+                        // Handle AJAX error
+                        $('#errorMessage').text('The total file size exceeds 1GB. Please subscribe to upload larger files.').show();
+                        window.location.href = paymentPageUrl;
+                    }
+                });
+                // $('#errorMessage').text('The total file size exceeds 20GB. Please upgrade plan for upload more than 20GB.').show();
             } else {
                 showProgress(); // Show the upload progress
                 r.upload(); // Start the upload
@@ -429,34 +451,9 @@
             filePaths.push(response.path + '/' + response.name);
 
             if (filesUploaded === totalFiles) {
-                const downloadLink = `/get/link/${response.fileUpload_name}`;
-
+               const downloadLink = `/get/link/${response.fileUpload_name}`;
                 window.location.href = downloadLink;
             }
-
-            const filePreview = document.createElement('div');
-            filePreview.classList.add('col-md-4', 'mb-3');
-
-            const downloadBtn = document.createElement('a');
-            downloadBtn.href = response.path + '/' + response.name;
-            downloadBtn.classList.add('btn', 'btn-success', 'w-100');
-            downloadBtn.setAttribute('download', response.name);
-            downloadBtn.innerHTML = 'Download';
-
-            const copyBtn = document.createElement('button');
-            copyBtn.classList.add('btn', 'btn-info', 'w-100', 'mt-2');
-            copyBtn.innerHTML = 'Copy Path';
-            copyBtn.onclick = function() {
-                navigator.clipboard.writeText(response.path + '/' + response.name)
-                    .then(() => alert('File path copied!'))
-                    .catch(err => alert('Error copying path: ' + err));
-            };
-
-            filePreview.appendChild(downloadBtn);
-            filePreview.appendChild(copyBtn);
-
-            document.getElementById('filePreviews').appendChild(filePreview);
-            $('.card-footer').show();
         });
 
         r.on('fileError', function(file, response) {
@@ -476,6 +473,7 @@
         function saveFilePathsToServer(filePaths) {
             $.ajax({
                 url: '{{ route('store.filepaths') }}',
+                
                 method: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
