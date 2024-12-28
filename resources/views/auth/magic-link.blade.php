@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('title', 'Login/Register')
-    
+
 @section('content')
-    
+
 <div class="container area login-container">
  
     <div class="row justify-content-center">
@@ -37,7 +37,9 @@
                     <span class="character-counter" style="float: right; font-size: 12px;"></span></div>
                 </div>
                 <div class="row center">
-                <div class="cf-turnstile" data-sitekey="0x4AAAAAAAHC6CttzOh3NYgQ" data-theme="light"><div><input type="hidden" name="cf-turnstile-response" id="cf-chl-widget-ob4y4_response" value=""></div></div>
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAAAHC6CttzOh3NYgQ" data-theme="light">
+                        <div><input type="hidden" name="cf-turnstile-response" id="cf-chl-widget-ob4y4_response" value=""></div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 d-flex justify-content-center">
@@ -45,6 +47,11 @@
                     </div>
                 </div>
             </form>
+
+
+
+
+
         </div>
     </div>
 </div>
