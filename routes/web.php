@@ -22,7 +22,9 @@ use App\Http\Controllers\Backend\Auth\MagicLinkController;
 
 
 Route::get('/', function () {
-    \Artisan::call('storage:link');
+    if (!\File::exists(public_path('storage'))) {
+        \Artisan::call('storage:link');
+    }
     return view('home');
 })->name('home');
 
