@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use ZipArchive;
 use Stripe\StripeClient;
 use App\Models\TrackFile;
 use App\Models\UserPlans;
-use App\Models\FileUpload;
 
+use App\Models\FileUpload;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -32,6 +33,38 @@ class UploadController extends Controller
     {
         $userPlan = UserPlans::query()->first();
         return view("payment", compact("userPlan"));
+    }
+
+    public function downloadZip(Request $request)
+    {
+        $fileUrls = $request->input('files'); // Array of file URLs
+        $zipFileName = 'files-' . time() . '.zip';
+
+        // Temporary file path
+        $zipFilePath = storage_path('app/public/' . $zipFileName);
+
+        // Get the base URL for storage (this will work on both localhost and live domains)
+        $baseUrl = asset('storage/'); // This will automatically return the base URL for your storage (e.g., http://yourdomain.com/storage/)
+
+        // Create the ZipArchive object
+        $zip = new ZipArchive();
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) === true) {
+            foreach ($fileUrls as $fileUrl) {
+                // Convert URL to file path by removing the base URL part
+                $filePath = str_replace($baseUrl, 'public/', $fileUrl);
+
+                // Get the file content from storage
+                if (Storage::exists($filePath)) {
+                    $fileContent = Storage::get($filePath); // Get file content
+                    $fileName = basename($filePath); // Extract the file name
+                    $zip->addFromString($fileName, $fileContent); // Add file to ZIP
+                }
+            }
+            $zip->close();
+        }
+
+        // Return ZIP file for download
+        return response()->download($zipFilePath)->deleteFileAfterSend(true);
     }
 
     public function createSubscriptions(Request $request)
