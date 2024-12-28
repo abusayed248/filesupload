@@ -22,8 +22,8 @@ use App\Http\Controllers\Backend\Auth\MagicLinkController;
 
 
 Route::get('/', function () {
-    Artisan::call('storage:link');
     return view('home');
+    \Artisan::call('storage:link');
 })->name('home');
 
 Route::post('/send-magic-link', [MagicLinkController::class, 'sendMagicLink'])->name('magic-link.send');
