@@ -11,6 +11,7 @@ use App\Jobs\ProcessUploadedFile;
 use Illuminate\Support\Facades\Bus;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class FileUploadController extends Controller
 {
@@ -159,11 +160,12 @@ class FileUploadController extends Controller
 
 
       //  $fileUpload = FileUpload::query()->where('name', $fileName)->first();
-        $link = $fileName;
-
-
-        return view('get-download-link', compact('link'));
-        //   return response()->download($filePath);
+ //       $link = $fileName;
+        $link = url('get/download/' . $fileName);
+        $qrCode = QrCode::size(200)->generate($link);
+    
+    
+        return view('get-download-link', compact('link', 'qrCode'));
     }
 
 

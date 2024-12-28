@@ -14,14 +14,17 @@
                 <div class="d-flex justify-content-center mt-4">
                     <div class="col-md-6 pt-4 pb-4 text-center">
 
-       
-
+                        <!-- QR Code -->
                         <div class="mb-4">
-                            <!-- Copy Link Button -->
-                            <input type="text" value="{{ url('get/download/' . $link) }}" readonly class="form-control mt-2" id="downloadUrl">
-                            <button class="btn btn-secondary mt-2 copyLinkBtn" data-clipboard-target="#downloadUrl">Copy Link</button>
+                            <h5 class="text-center">Scan the QR Code</h5>
+                            <div>{!! $qrCode !!}</div>
                         </div>
 
+                        <!-- Copy Link Section -->
+                        <div class="mb-4">
+                            <input type="text" value="{{ $link }}" readonly class="form-control mt-2" id="downloadUrl">
+                            <button class="btn btn-secondary mt-2 copyLinkBtn" data-clipboard-target="#downloadUrl">Copy Link</button>
+                        </div>
 
                     </div>
                 </div>
