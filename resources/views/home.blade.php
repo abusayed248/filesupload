@@ -28,7 +28,6 @@
                     <div class="d-flex justify-content-center mt-4">
                         <div class="file-upload-container col-md-5 pt-4 pb-4" id="browseFile" style="cursor: pointer">
 
-
                             <div class="card-body">
                                 <div id="upload-container" class="text-center">
                                     <span id="browseFile" class="btn btn-primary" multiple>Browse File</span>
@@ -75,7 +74,7 @@
                             </div>
 
 
-                            <label for="file-upload">
+                            <label for="file-upload" style="cursor: pointer">
                                 <p>Click here or drop files to upload or transfer</p>
                                 <small>(Max 50 files, 10 GB per file, total 100 GB)</small>
                                 <br />
