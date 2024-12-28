@@ -26,7 +26,7 @@
                     <h1 class="text-center titel fw-bold">Upload files, transfer them easily</h1>
                     <p class="text-center titel">File upload made easy. Upload files up to 20GB and transfer files easily</p>
                     <div class="d-flex justify-content-center mt-4">
-                        <div class="file-upload-container col-md-5 pt-4 pb-4">
+                        <div class="file-upload-container col-md-5 pt-4 pb-4" id="browseFile" style="cursor: pointer">
 
 
                             <div class="card-body">
