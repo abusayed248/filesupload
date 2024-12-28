@@ -324,7 +324,7 @@
         </div>
         </div>
     </section>
-    <div class="container pt-4">
+    {{-- <div class="container pt-4">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -351,7 +351,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     @include('backend.components.footer')
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Backend\FileUploadController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\Backend\Auth\MagicLinkController;
 
 
 Route::get('/', function () {
+    Artisan::call('storage:link');
     return view('home');
 })->name('home');
 
