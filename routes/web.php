@@ -22,7 +22,7 @@ use App\Http\Controllers\Backend\Auth\MagicLinkController;
 
 
 Route::get('/', function () {
-    // Artisan::call('storage:link');
+    Artisan::call('storage:link');
     return view('home');
 })->name('home');
 
