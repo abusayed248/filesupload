@@ -403,7 +403,7 @@
 
             $('#uploadModal').modal('hide'); // Close the modal
             const totalSizeInGB = (totalSize / (1024 * 1024 * 1024)).toFixed(2);
-            if (totalSizeInGB > 1) {
+            if (totalSizeInGB > 20) {
 
 
                 $.ajax({
@@ -428,7 +428,7 @@
                     error: function() {
                         r.pause();
                         // Handle AJAX error
-                        $('#errorMessage').text('The total file size exceeds 1GB. Please subscribe to upload larger files.').show();
+                        $('#errorMessage').text('The total file size exceeds 20GB. Please subscribe to upload larger files.').show();
                         window.location.href = paymentPageUrl;
                     }
                 });
