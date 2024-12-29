@@ -89,3 +89,8 @@ Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/dmca', [MagicLinkController::class, 'dmca'])->name('dmca');
 Route::get('/terms', [ContactController::class, 'terms'])->name('terms');
 Route::get('/privacy', [ContactController::class, 'privacy'])->name('privacy');
+
+
+// contact route
+Route::post('/message-send', [ContactController::class, 'sendMsg'])->name('contact.msg.send');
+

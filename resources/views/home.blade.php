@@ -145,7 +145,7 @@
                     <img class="img-fluid  clo_img" src="{{ asset('files') }}/img/cloud.webp" alt="">
                 </div>
                 <div class="col-md-10">
-                    <p>Upload files effortlessly up to 10GB without any restrictions or the need to register. With easyupload.io’s high-speed servers, sharing files has never been this seamless. Register for free to track your uploads and access advanced features.</p>
+                    <p>Upload files effortlessly up to 10GB without any restrictions or the need to register. With filesupload.io’s high-speed servers, sharing files has never been this seamless. Register for free to track your uploads and access advanced features.</p>
                 </div>
             </div>
             <div class="row align-items-center mtop">
@@ -305,8 +305,8 @@
                     <span class="fw-light">16/10/2019 14.19 UTC
                     </span>
                     <h6 class="mb-4 fst-italic">What kind of files can be uploaded?</h6>
-                    <p class="fw-light">All kinds of files that is not legal to share or upload should be avoided by all easyupload.io users. Easyupload.io is so strict about the legal issues and does not permit any illegal file including but not limited to: Adult Content, Child Abuse, Movies, Games or any kind of copyrighted material.
-                        <span class="d-block py-3">Easyupload.io makes regular checks for uploaded files and take the necessary actions if any violation is made. We also have report mechanisms for uploaded files where you can report any file that you think it is violating the terms of use and law. We instantly delete and block the related url, and block the user account if necessary.
+                    <p class="fw-light">All kinds of files that is not legal to share or upload should be avoided by all filesupload.io users. Filesupload.io is so strict about the legal issues and does not permit any illegal file including but not limited to: Adult Content, Child Abuse, Movies, Games or any kind of copyrighted material.
+                        <span class="d-block py-3">Filesupload.io makes regular checks for uploaded files and take the necessary actions if any violation is made. We also have report mechanisms for uploaded files where you can report any file that you think it is violating the terms of use and law. We instantly delete and block the related url, and block the user account if necessary.
                         </span>
                         <span class="d-block py-3">We are offering a free service for people to share their files and store their files, only condition is to keep them legal!</span>
 
@@ -318,34 +318,7 @@
         </div>
         </div>
     </section>
-    <div class="container pt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header text-center">
-                        <h5>Upload File</h5>
-                    </div>
-
-                    <div class="card-body">
-                        <div id="upload-container" class="text-center">
-                            <button id="browseFile" class="btn btn-primary" multiple>Browse File</button>
-                        </div>
-                        <div style="display: none" class="progress mt-3" style="height: 25px">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%; height: 100%">75%</div>
-                        </div>
-                    </div>
-
-                    <div class="card-footer p-4" style="display: none">
-                        <div id="filePreviews" class="row"></div>
-                    </div>
-
-                    <!-- Modal for Password and Expiry Date -->
-
-
-                </div>
-            </div>
-        </div>
-    </div>
+    
     @include('backend.components.footer')
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

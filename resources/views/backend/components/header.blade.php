@@ -19,16 +19,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#how_it_work">How It Works</a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('contact')}}">Contact Us</a>
+                        </li>
                         <li class="nav-item">
                             @if(auth()->user() && auth()->user()->role == 'admin')
                             <a class="nav-link" href="{{ route('allfiles.index') }}">All files</a>
                             @else
                             <a class="nav-link" href="{{ route('files.index') }}">My files</a>
                             @endif
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('contact')}}">Contact Us</a>
                         </li>
                         <li class="nav-item d-flex align-items-center">
                             <div class="person_login">

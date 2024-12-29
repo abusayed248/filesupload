@@ -1,18 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Login Link</title>
+    <title>Filesupload.io</title>
     <style>
-        /* General Styles */
+        /* General styles */
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f7;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f7;
             color: #51545e;
+        }
+
+        table {
+            border-spacing: 0;
+            width: 100%;
+        }
+
+        td {
+            padding: 0;
         }
 
         .email-wrapper {
@@ -49,8 +58,6 @@
         .email-body h1 {
             margin-top: 0;
             color: #333333;
-            font-size: 22px;
-            text-align: center;
         }
 
         .email-body p {
@@ -70,19 +77,16 @@
             background-color: #4CAF50;
             color: white;
             text-decoration: none;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 5px;
             font-weight: bold;
-            font-size: 16px;
-            margin: 20px 0;
-            text-align: center;
         }
 
         .btn:hover {
             background-color: #45a049;
         }
 
-        /* Responsive Design */
+        /* Responsive styles */
         @media only screen and (max-width: 600px) {
             .email-body {
                 padding: 20px;
@@ -103,22 +107,25 @@
                     <div class="email-content">
                         <!-- Header -->
                         <div class="email-header">
-                            Login to Your Account
+                            Filesupload.io
                         </div>
 
                         <!-- Body -->
                         <div class="email-body">
-                            <h1>Welcome Back!</h1>
-                            <p>We received a request to log in to your account. Click the button below to log in:</p>
-                            <p style="text-align: center;">
-                                <a href="{{ $magicLinkUrl }}" class="btn">Login with Link</a>
+                            <h1>Hello {{ $mailData['name'] }},</h1>
+                            <p>{{ $mailData['message'] }}</p>
+                            <p>
+                                <a href="https://filesupload.io" class="btn">Visit Filesupload.io</a>
                             </p>
-                            <p style="text-align: center;">This link will expire in 15 minutes. If you didn’t request this, you can safely ignore this email.</p>
+                            <p>
+                                If you have any questions, feel free to contact us at contact@filesupload.io.
+                            </p>
+                            <p>Thank you,<br>The Filesupload Support Team</p>
                         </div>
 
                         <!-- Footer -->
                         <div class="email-footer">
-                            &copy; {{ date('d-m-Y') }} FilesUpload.io All rights reserved.
+                            &copy; {{ date('d-m-Y') }} Filesupload.io. All rights reserved.
                         </div>
                     </div>
                 </td>
@@ -128,4 +135,3 @@
 </body>
 
 </html>
-
