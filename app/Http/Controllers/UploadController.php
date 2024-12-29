@@ -38,7 +38,7 @@ class UploadController extends Controller
         return view("payment", compact("userPlan"));
     }
 
-    public function downloadZip2(Request $request)
+    public function downloadZipWithOutAws(Request $request)
     {
         $fileUrls = $request->input('files'); // Array of file URLs
         $zipFileName = 'files-' . time() . '.zip';
@@ -70,8 +70,6 @@ class UploadController extends Controller
         return response()->download($zipFilePath)->deleteFileAfterSend(true);
     }
 
-
-
     public function downloadZip(Request $request)
     {
         $fileUrls = $request->input('files');
@@ -97,7 +95,7 @@ class UploadController extends Controller
         }
 
         $zip->close();
-     
+
         // Verify file existence
         if (!file_exists($zipFilePath)) {
             Log::error('ZIP file not found after creation: ' . $zipFilePath);
