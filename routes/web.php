@@ -74,3 +74,7 @@ Route::post('/store-filepaths', [UploadController::class, 'storeFilePaths'])->na
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/terms', [ContactController::class, 'terms'])->name('terms');
 Route::get('/privacy', [ContactController::class, 'privacy'])->name('privacy');
+
+// contact route
+Route::post('/message-send', [ContactController::class, 'sendMsg'])->name('contact.msg.send');
+

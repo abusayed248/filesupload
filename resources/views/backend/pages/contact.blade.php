@@ -9,14 +9,22 @@
            <div class="row mt-5">
                     <div class="col-md-7  border-right">
                         <div class="mt-5 p-4">
+                            @if (session('status'))
+                                <div class="alert alert-success">
+                                    {{ session('status') }}
+                                </div>
+                            @endif
                             <h5 class=" border-bottom pb-3">Contact Form</h5>
                             <p class="text-center"><span class="text-bold">For Abuse and Copyright Infringement Reports: </span>abuse@easyupload.io <br>
                               <span class="text-bold">  For General Help: </span>support@filesupload.io</p>
-                                <form class="gap-10">
+
+                                <form class="gap-10" action="{{ route('contact.msg.send') }}" method="post">
+                                    @csrf
+
                                     <div class="form-group">
                                         <label >Name</label>
                                       <div class="d-flex align-items-center input-border mt-3">
-                                        <input type="text" class="form-control" >
+                                        <input type="text" name="name" class="form-control" >
                                         <i class="fa-solid fa-user p-3"></i>
                                       </div>
                                      
@@ -24,14 +32,14 @@
                                     <div class="form-group">
                                         <label >Email</label>
                                         <div class="d-flex align-items-center input-border mt-3">
-                                            <input type="email" class="form-control" >
+                                            <input type="email" name="email" class="form-control" >
                                             <i class="fa-regular fa-envelope p-3"></i>
                                           </div>
                                       </div>
                                     <div class="form-group">
                                       <label >Message</label>
                                       <div class="d-flex align-items-center input-border mt-3">
-                                        <textarea type="text" class="form-control"></textarea>
+                                        <textarea name="message" type="text" class="form-control"></textarea>
                                       <i class="fa-solid fa-pen-nib p-3"></i>
                                       </div>
                                     </div>
@@ -68,7 +76,7 @@
                                 </div>
                                 <div>
                                     <i class="fa-regular fa-envelope"></i>
-                                    <span class="text-bold">E-mail:</span><span>welcome@easyupload.io</span>
+                                    <span class="text-bold">E-mail:</span><span>welcome@filesupload.io</span>
                                 </div>
                                 <div>
                                     <i class="fa-brands fa-twitter"></i>
