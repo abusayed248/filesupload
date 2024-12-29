@@ -60,7 +60,12 @@ Route::get('/get-upload-progress/{batchId}', [FileUploadController::class, 'getU
 
 Route::get('get/link/{file}', [FileUploadController::class, 'getDownloadLink'])->name('get.link');
 
+Route::post('/subscription/check', [UploadController::class, 'check'])->name('subscription.check');
 
+Route::post('/download-zip', [UploadController::class, 'downloadZip'])->name('download.zip');
+
+Route::get('/payment', [UploadController::class, 'showPaymentPage'])->name('payment.page');
+Route::post('/subscription/create', [UploadController::class, 'createSubscriptions'])->name('subscription.create');
 
 
 Route::get('upload', [UploadController::class, 'index'])->name('upload.index');

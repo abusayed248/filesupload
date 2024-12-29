@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use ZipArchive;
+use Stripe\StripeClient;
 use App\Models\TrackFile;
+use App\Models\UserPlans;
+
 use App\Models\FileUpload;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -25,31 +29,86 @@ class UploadController extends Controller
     }
 
 
-    public function storeFilePaths(Request $request)
+    public function showPaymentPage()
     {
-
-        dd($request->all());
-        // Validate the incoming file paths
-        $request->validate([
-            'file_paths' => 'required|array',
-            'file_paths.*' => 'string', // Ensure each path is a string
-        ]);
-
-        // Create a unique name for this file path entry
-        $uniqueName = uniqid(); // Unique identifier for this set of file paths
-
-        // Store the file paths in the database (you can store them as a JSON array or a text field)
-        $filePath = new FilePath();
-        $filePath->unique_name = $uniqueName; // Store the unique name
-        $filePath->paths = json_encode($request->file_paths); // Store the file paths as JSON
-        $filePath->save();
-
-        return response()->json([
-            'message' => 'File paths saved successfully',
-            'unique_name' => $uniqueName, // Return the unique name for reference
-        ]);
+        $userPlan = UserPlans::query()->first();
+        return view("payment", compact("userPlan"));
     }
 
+    public function downloadZip(Request $request)
+    {
+        $fileUrls = $request->input('files'); // Array of file URLs
+        $zipFileName = 'files-' . time() . '.zip';
+
+        // Temporary file path
+        $zipFilePath = storage_path('app/public/' . $zipFileName);
+
+        // Get the base URL for storage (this will work on both localhost and live domains)
+        $baseUrl = asset('storage/'); // This will automatically return the base URL for your storage (e.g., http://yourdomain.com/storage/)
+
+        // Create the ZipArchive object
+        $zip = new ZipArchive();
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) === true) {
+            foreach ($fileUrls as $fileUrl) {
+                // Convert URL to file path by removing the base URL part
+                $filePath = str_replace($baseUrl, 'public/', $fileUrl);
+
+                // Get the file content from storage
+                if (Storage::exists($filePath)) {
+                    $fileContent = Storage::get($filePath); // Get file content
+                    $fileName = basename($filePath); // Extract the file name
+                    $zip->addFromString($fileName, $fileContent); // Add file to ZIP
+                }
+            }
+            $zip->close();
+        }
+
+        // Return ZIP file for download
+        return response()->download($zipFilePath)->deleteFileAfterSend(true);
+    }
+
+    public function createSubscriptions(Request $request)
+    {
+        $stripe = new StripeClient(env('STRIPE_SECRET'));
+
+        $user = Auth::user();
+
+
+        $customer = $stripe->customers->create([
+            'email' => $user->email,
+            'name' => $user->name,
+        ]);
+        // Step 2: Attach payment method to the customer
+        $stripe->paymentMethods->attach(
+            $request->token, // Payment method from Stripe Elements
+            ['customer' => $customer->id]
+        );
+
+        // Step 3: Set the default payment method for the customer
+        $stripe->customers->update(
+            $customer->id,
+            ['invoice_settings' => ['default_payment_method' => $request->token]]
+        );
+
+        // Step 4: Create the subscription
+        $subscription = $stripe->subscriptions->create([
+            'customer' => $customer->id,
+            'items' => [['price' => $request->plan]], // Use the price ID from the form
+            'expand' => ['latest_invoice.payment_intent'], // Expand to get payment details
+        ]);
+
+        // Step 5: Check payment status
+        $paymentIntent = $subscription->latest_invoice->payment_intent;
+
+        if ($paymentIntent->status === 'succeeded') {
+            $user->subscription_date = now();
+            $user->save();
+            return redirect()->route('payment.page')->with('success', 'Your payment was successful. Thank you for subscribing!');
+        } else {
+
+            return redirect()->route('payment.page')->with('error', 'Payment failed. Please try again.');
+        }
+    }
 
     /**
      * Handles the file upload
@@ -101,6 +160,32 @@ class UploadController extends Controller
             'status' => true,
         ]);
     }
+
+    public function check(Request $request)
+    {
+        $user = auth()->user();
+        if ($user == null) {
+            return response()->json(['isSubscribed' => false]);
+        } else {
+            if (!$user->subscription_date) {
+                return response()->json(['isSubscribed' => false]);
+            }
+
+            // Calculate the expiration date (1 month after subscription_date)
+            $expirationDate = \Carbon\Carbon::parse($user->subscription_date)->addMonth();
+
+            // Check if the current date is before the expiration date
+            $isSubscribed = now()->lt($expirationDate);
+            // Example logic for checking subscription
+            //   $isSubscribed = $user->subscription && $user->subscription->is_active;
+
+            return response()->json(['isSubscribed' => $isSubscribed]);
+        }
+
+        // Check if the user has a subscription date
+
+    }
+
 
     /**
      * Saves the file to S3 server
