@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TrackFile extends Model
 {
     use HasFactory;
-    protected $fillable = ['filepath', 'file_upload_id', 'expires_at', 'password'];
+    protected $fillable = ['filepath', 'is_premium', 'file_upload_id', 'expires_at', 'password'];
 
     public function fileUpload()
     {

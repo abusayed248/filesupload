@@ -178,7 +178,6 @@ class UploadController extends Controller
             ]);
         }
 
-
         $fileUpload = FileUpload::query()->where([
             'name' => $request->name,  // Compare based on the name
             'expires_at' => $expiry_date,
@@ -243,10 +242,23 @@ class UploadController extends Controller
             basename($filePath)
         );
 
+        $isSubscribed = 0;
+
+        if (auth()->user()) {
+            if (!auth()->user()->subscription_date) {
+                $isSubscribed = 0;
+            }
+            $expirationDate = \Carbon\Carbon::parse(auth()->user()->subscription_date)->addMonth();
+            $isSubscribed = now()->lt($expirationDate) ? 1 : 0;
+        } else {
+            $isSubscribed = 0;
+        }
+
         // Store the file information in the database
         TrackFile::create([
             'filepath' => Storage::disk('s3')->url($filePath),
             'file_upload_id' => $fileUpload->id,
+            'is_premium' => $isSubscribed
         ]);
 
         return response()->json([
@@ -336,8 +348,7 @@ class UploadController extends Controller
 
             // Check if the current date is before the expiration date
             $isSubscribed = now()->lt($expirationDate);
-            // Example logic for checking subscription
-            //   $isSubscribed = $user->subscription && $user->subscription->is_active;
+
 
             return response()->json(['isSubscribed' => $isSubscribed]);
         }

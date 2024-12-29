@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('file_upload_id')->constrained()->nullable();
             $table->bigInteger('expires_at')->nullable();
             $table->string('password')->nullable();
+            $table->tinyInteger('is_premium')->nullable();
             $table->timestamps();
         });
     }
