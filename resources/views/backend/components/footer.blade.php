@@ -18,12 +18,9 @@
                 </ul>
             </div>
         </div>
-        <div class="row">
-            <img class="app" src="{{ asset('files') }}/img/appstore (1).webp" alt="">
-            <img class="app" src="{{ asset('files') }}/img/googleplay.webp" alt="">
-        </div>
+        
         <div class="row pt-3">
-        <p class="titel text-center">Copyright &copy; 2024, filesupload.io - 0.00122 second</p>
+        <p class="titel text-center">Copyright &copy; 2024, filesupload.io</p>
         </div>
     </div>
 </footer>
