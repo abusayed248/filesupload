@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use ZipArchive;
+use App\Models\Folder;
 use Stripe\StripeClient;
 use App\Models\TrackFile;
-use App\Models\UserPlans;
 
+use App\Models\UserPlans;
 use App\Models\FileUpload;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -35,7 +38,7 @@ class UploadController extends Controller
         return view("payment", compact("userPlan"));
     }
 
-    public function downloadZip(Request $request)
+    public function downloadZip2(Request $request)
     {
         $fileUrls = $request->input('files'); // Array of file URLs
         $zipFileName = 'files-' . time() . '.zip';
@@ -66,6 +69,45 @@ class UploadController extends Controller
         // Return ZIP file for download
         return response()->download($zipFilePath)->deleteFileAfterSend(true);
     }
+
+
+
+    public function downloadZip(Request $request)
+    {
+        $fileUrls = $request->input('files');
+        $zipFileName = 'files-' . time() . '.zip';
+        $zipFilePath = storage_path('app/public/' . $zipFileName);
+        // Create ZIP archive
+        $zip = new ZipArchive();
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) !== true) {
+            Log::error('Failed to create ZIP file');
+            return response()->json(['error' => 'Failed to create ZIP file'], 500);
+        }
+
+        foreach ($fileUrls as $fileUrl) {
+            $fileName = basename($fileUrl);
+            $filePath = ltrim(parse_url($fileUrl, PHP_URL_PATH), '/');
+            $filePath = urldecode($filePath);
+            if (Storage::disk('s3')->exists($filePath)) {
+                $fileContent = Storage::disk('s3')->get($filePath);
+                $zip->addFromString($fileName, $fileContent);
+            } else {
+                Log::warning('File does not exist on S3: ' . $filePath);
+            }
+        }
+
+        $zip->close();
+     
+        // Verify file existence
+        if (!file_exists($zipFilePath)) {
+            Log::error('ZIP file not found after creation: ' . $zipFilePath);
+            return response()->json(['error' => 'ZIP file not found'], 500);
+        }
+
+        // Return the ZIP file for download
+        return response()->download($zipFilePath)->deleteFileAfterSend(true);
+    }
+
 
     public function createSubscriptions(Request $request)
     {
@@ -123,17 +165,37 @@ class UploadController extends Controller
     public function store(Request $request)
     {
 
+
+        $folderName = auth()->user() ? auth()->user()->email : 'default'; // Set folder name based on user email or 'default'
+        $userId = auth()->user() ? auth()->user()->id : null; // Set user ID if user is authenticated, otherwise null
+        $expiry_date =  $request->expiry_date ? $request->expiry_date : null; // Set user ID if user is authenticated, otherwise null
+        $password = $request->password ? $request->password : null; // Set user ID if user is authenticated, otherwise nul
+        $folder = Folder::query()->where([
+            'name' => $folderName,  // Compare based on the name
+        ])->first();
+
+        if (!$folder) {
+            $folder = Folder::create([
+                'name' => $folderName,  // Compare based on the name
+            ]);
+        }
+
+
         $fileUpload = FileUpload::query()->where([
             'name' => $request->name,  // Compare based on the name
-            'expires_at' => $request->expiry_date,
+            'expires_at' => $expiry_date,
+            'user_id' => $userId,
         ])->first();
         if (!$fileUpload) {
             $fileUpload = FileUpload::create([
                 'name' => $request->name,
-                'password' => $request->password ? $request->password : null,
-                'expires_at' => $request->expiry_date,
+                'password' => $password,
+                'expires_at' => $expiry_date,
+                'user_id' => $userId,
+                'folder_id' =>  $folder->id,
             ]);
         }
+
         // create the file receiver
         $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
 
@@ -145,11 +207,14 @@ class UploadController extends Controller
         // receive the file
         $save = $receiver->receive();
 
-        // check if the upload has finished (in chunk mode it will send smaller files)
-        if ($save->isFinished()) {
-            return $this->saveFile($save->getFile(), $fileUpload);
-        }
+        // // check if the upload has finished (in chunk mode it will send smaller files)
+        // if ($save->isFinished()) {
+        //     return $this->saveFileInS3($save->getFile(), $fileUpload);
+        // }
 
+        if ($save->isFinished()) {
+            return $this->saveFileInS3($save->getFile(), $fileUpload);
+        }
 
 
         // we are in chunk mode, lets send the current progress
@@ -160,6 +225,103 @@ class UploadController extends Controller
             'status' => true,
         ]);
     }
+
+
+    protected function saveFileInS3(UploadedFile $file, $fileUpload)
+    {
+        // Generate a unique filename
+        $fileName = $this->createFilename($file);
+
+        // Use the user-specified folder name or default to "default_folder"
+        $userFolder = $fileUpload->folder_name ? trim($fileUpload->folder_name, '/') : 'default_folder';
+
+        // Build the S3 file path
+        $filePath = "{$userFolder}/{$fileName}";
+
+        // Upload the file to S3
+        Storage::disk('s3')->putFileAs(
+            dirname($filePath),
+            $file,
+            basename($filePath)
+        );
+
+        // Store the file information in the database
+        TrackFile::create([
+            'filepath' => Storage::disk('s3')->url($filePath),
+            'file_upload_id' => $fileUpload->id,
+        ]);
+
+        return response()->json([
+            'path' => Storage::disk('s3')->url(dirname($filePath)),
+            'name' => $fileName,
+            'mime_type' => $file->getMimeType(),
+            'fileUpload_name' => $fileUpload->name
+        ]);
+    }
+
+    public function showFilesByFolder()
+    {
+
+
+        $fileUpload = FileUpload::where('user_id', auth()->id())->pluck('id');
+        $TrackFile = TrackFile::whereIn('file_upload_id', $fileUpload)
+            ->paginate(10);
+        return view('forder-files', compact('TrackFile'));
+    }
+
+    public function showAllFileFolder()
+    {
+
+        $fileUploads = Folder::query()
+            ->with('trackFiles')->latest() // Ensure the trackFiles are loaded
+            ->paginate(10);
+
+
+        // Check if the user is a super-admin
+        if (auth()->user() && auth()->user()->role == 'admin') {
+            // Add logic to display the folder_name and file name
+            foreach ($fileUploads as $fileUpload) {
+                foreach ($fileUpload->trackFiles as $trackFile) {
+                    // Extract folder_name and file name from the file path
+                    $fileUpload->folder_name = $fileUpload->folder_name;
+                    $trackFile->file_name = basename($trackFile->filepath);
+                }
+            }
+        }
+
+
+        return view('admin-files', compact('fileUploads'));
+    }
+
+
+
+    public function deleteFile($fileId)
+    {
+
+        // Find the file by its ID
+        $trackFile = TrackFile::findOrFail($fileId);
+
+
+        $parsedUrl = parse_url($trackFile->filepath);
+
+        // Assuming the base URL starts from '://', we remove it to get the file path
+        $filePath = ltrim($parsedUrl['path'], '/'); // Remove leading slash if any
+
+        // Decode URL-encoded characters (e.g., %40 for @, %20 for space)
+        $filePath = urldecode($filePath);
+
+        // Check if the file exists in S3 and delete it
+        if (Storage::disk('s3')->exists($filePath)) {
+            Storage::disk('s3')->delete($filePath);
+            //   return response()->json(['message' => 'File deleted successfully.'], 200);
+        }
+
+        // Delete the file record from the database
+        $trackFile->delete();
+
+        return redirect()->back()->with('success', 'File deleted successfully');
+    }
+
 
     public function check(Request $request)
     {
@@ -297,12 +459,6 @@ class UploadController extends Controller
      */
     protected function createFilename(UploadedFile $file)
     {
-        $extension = $file->getClientOriginalExtension();
-        $filename = str_replace("." . $extension, "", $file->getClientOriginalName()); // Filename without extension
-
-        // Add timestamp hash to name of the file
-        $filename .= "_" . md5(time()) . "." . $extension;
-
-        return $filename;
+        return $file->getClientOriginalName();
     }
 }

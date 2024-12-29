@@ -39,9 +39,23 @@ Route::get('/logout', function () {
     return redirect('magic-view');
 })->middleware('guest');
 
-Route::middleware('auth')->group(function() {
-    Route::middleware('auth.redirect')->post('/logout', [MagicLinkController::class, 'destroy']) ->name('logout');
+Route::middleware('auth')->group(function () {
+    Route::middleware('auth.redirect')->post('/logout', [MagicLinkController::class, 'destroy'])->name('logout');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('all-files', [UploadController::class, 'showFilesByFolder'])->name('files.index');
+    // Route::get('/files/download/{filePath}', [UploadController::class, 'downloadFile'])->name('files.download');
+
+    Route::get('files2333', [UploadController::class, 'showFilesByFolder'])->name('upload.index');
+
+    Route::get('/files/download/{filePath}', [UploadController::class, 'downloadFile'])->name('files.download');
+
+    Route::get('folder-files', [UploadController::class, 'showAllFileFolder'])->name('allfiles.index');
+
+    Route::delete('files/{fileId}/delete', [UploadController::class, 'deleteFile'])->name('files.delete');
+});
+
 Route::get('/login', [MagicLinkController::class, 'login']);
 Route::post('/login', [MagicLinkController::class, 'store'])->name('login');
 
