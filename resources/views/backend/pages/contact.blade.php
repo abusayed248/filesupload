@@ -76,7 +76,7 @@
                                 </div>
                                 <div>
                                     <i class="fa-regular fa-envelope"></i>
-                                    <span class="text-bold">E-mail:</span><span>welcome@filesupload.io</span>
+                                    <span class="text-bold">E-mail:</span><span>contact@filesupload.io</span>
                                 </div>
                                 <div>
                                     <i class="fa-brands fa-twitter"></i>
