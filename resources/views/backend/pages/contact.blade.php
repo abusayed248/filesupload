@@ -15,7 +15,7 @@
                                 </div>
                             @endif
                             <h5 class=" border-bottom pb-3">Contact Form</h5>
-                            <p class="text-center"><span class="text-bold">For Abuse and Copyright Infringement Reports: </span>abuse@easyupload.io <br>
+                            <p class="text-center"><span class="text-bold">For Abuse and Copyright Infringement Reports: </span>abuse@filesupload.io <br>
                               <span class="text-bold">  For General Help: </span>support@filesupload.io</p>
 
                                 <form class="gap-10" action="{{ route('contact.msg.send') }}" method="post">
