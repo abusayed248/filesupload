@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Easyuploads @yield('title')</title>
+    <title>Filesupload @yield('title')</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">

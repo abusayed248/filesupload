@@ -6,7 +6,7 @@
                 <img class="img-fluid" src="{{ asset('files') }}/static_img/File.png" alt="">
                 </div>
             
-                <p class="titel">Filesupload.io offers free file upload and transfer service without limits. Upload files & share them with your friends and colleagues without time, download or bandwidth limit. Easyupload.io offers these services for free any without need of registration.</p>
+                <p class="titel">Filesupload.io offers free file upload and transfer service without limits. Upload files & share them with your friends and colleagues without time, download or bandwidth limit. Filesupload.io offers these services for free any without need of registration.</p>
             </div>
             <div class="col-md-6">
                 <h4 class="titel">QUICK LINKS</h4>
