@@ -23,7 +23,7 @@ use App\Http\Controllers\Backend\Auth\MagicLinkController;
 
 Route::get('/', function () {
     return view('home');
-    \Artisan::call('storage:link');
+    // \Artisan::call('storage:link');
 })->name('home');
 
 Route::post('/send-magic-link', [MagicLinkController::class, 'sendMagicLink'])->name('magic-link.send');
@@ -86,7 +86,6 @@ Route::get('upload', [UploadController::class, 'index'])->name('upload.index');
 Route::post('upload', [UploadController::class, 'store'])->name('upload.store');
 Route::post('/store-filepaths', [UploadController::class, 'storeFilePaths'])->name('store.filepaths');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
-Route::get('/dmca', [MagicLinkController::class, 'dmca'])->name('dmca');
 Route::get('/terms', [ContactController::class, 'terms'])->name('terms');
 Route::get('/privacy', [ContactController::class, 'privacy'])->name('privacy');
 

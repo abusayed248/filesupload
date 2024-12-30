@@ -11,9 +11,6 @@
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-end align-items-center">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dmca') }}">DMCA</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="#faq">FAQ</a>
                         </li>
                         <li class="nav-item">
@@ -25,7 +22,7 @@
                         <li class="nav-item">
                             @if(auth()->user() && auth()->user()->role == 'admin')
                             <a class="nav-link" href="{{ route('allfiles.index') }}">All files</a>
-                            @else
+                            @elseif(auth()->user())
                             <a class="nav-link" href="{{ route('files.index') }}">My files</a>
                             @endif
                         </li>
