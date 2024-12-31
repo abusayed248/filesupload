@@ -84,7 +84,8 @@ class UploadController extends Controller
 
         foreach ($fileUrls as $fileUrl) {
             $fileName = basename($fileUrl);
-            $filePath = ltrim(parse_url($fileUrl, PHP_URL_PATH), '/');
+            $baseUrlToSkip = 'https://s3.eu-central-1.amazonaws.com/fileupload.io/';
+            $filePath = str_replace($baseUrlToSkip, '', $fileUrl);
             $filePath = urldecode($filePath);
             if (Storage::disk('s3')->exists($filePath)) {
                 $fileContent = Storage::disk('s3')->get($filePath);
@@ -312,14 +313,11 @@ class UploadController extends Controller
         $trackFile = TrackFile::findOrFail($fileId);
 
 
-        $parsedUrl = parse_url($trackFile->filepath);
 
-        // Assuming the base URL starts from '://', we remove it to get the file path
-        $filePath = ltrim($parsedUrl['path'], '/'); // Remove leading slash if any
 
-        // Decode URL-encoded characters (e.g., %40 for @, %20 for space)
+        $baseUrlToSkip = 'https://s3.eu-central-1.amazonaws.com/fileupload.io/';
+        $filePath = str_replace($baseUrlToSkip, '', $trackFile->filepath);
         $filePath = urldecode($filePath);
-
         // Check if the file exists in S3 and delete it
         if (Storage::disk('s3')->exists($filePath)) {
             Storage::disk('s3')->delete($filePath);
