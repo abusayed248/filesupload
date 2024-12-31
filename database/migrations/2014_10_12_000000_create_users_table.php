@@ -21,12 +21,12 @@ return new class extends Migration
             $table->timestamp('subscription_date')->nullable();
             $table->string('login_token')->nullable();
             $table->string('password')->nullable();
+            $table->string('role')->nullable();
             $table->string('verify_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
     }
-    
     /**
      * Reverse the migrations.
      */

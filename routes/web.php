@@ -23,7 +23,7 @@ use App\Http\Controllers\Backend\Auth\MagicLinkController;
 
 Route::get('/', function () {
     return view('home');
-    \Artisan::call('storage:link');
+    // \Artisan::call('storage:link');
 })->name('home');
 
 Route::post('/send-magic-link', [MagicLinkController::class, 'sendMagicLink'])->name('magic-link.send');
@@ -39,9 +39,23 @@ Route::get('/logout', function () {
     return redirect('magic-view');
 })->middleware('guest');
 
-Route::middleware('auth')->group(function() {
-    Route::middleware('auth.redirect')->post('/logout', [MagicLinkController::class, 'destroy']) ->name('logout');
+Route::middleware('auth')->group(function () {
+    Route::middleware('auth.redirect')->post('/logout', [MagicLinkController::class, 'destroy'])->name('logout');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('all-files', [UploadController::class, 'showFilesByFolder'])->name('files.index');
+    // Route::get('/files/download/{filePath}', [UploadController::class, 'downloadFile'])->name('files.download');
+
+    Route::get('files2333', [UploadController::class, 'showFilesByFolder'])->name('upload.index');
+
+    Route::get('/files/download/{filePath}', [UploadController::class, 'downloadFile'])->name('files.download');
+
+    Route::get('folder-files', [UploadController::class, 'showAllFileFolder'])->name('allfiles.index');
+
+    Route::delete('files/{fileId}/delete', [UploadController::class, 'deleteFile'])->name('files.delete');
+});
+
 Route::get('/login', [MagicLinkController::class, 'login']);
 Route::post('/login', [MagicLinkController::class, 'store'])->name('login');
 
@@ -74,6 +88,7 @@ Route::post('/store-filepaths', [UploadController::class, 'storeFilePaths'])->na
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/terms', [ContactController::class, 'terms'])->name('terms');
 Route::get('/privacy', [ContactController::class, 'privacy'])->name('privacy');
+
 
 // contact route
 Route::post('/message-send', [ContactController::class, 'sendMsg'])->name('contact.msg.send');

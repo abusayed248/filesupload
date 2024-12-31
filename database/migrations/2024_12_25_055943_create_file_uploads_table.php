@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('password')->nullable();
+            $table->unsignedBigInteger('folder_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->bigInteger('expires_at')->nullable();
             $table->timestamps();
         });

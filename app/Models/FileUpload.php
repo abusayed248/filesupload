@@ -11,5 +11,9 @@ class FileUpload extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    protected $fillable = ['expires_at', 'password', 'name',];
+    protected $fillable = ['expires_at', 'password', 'name', 'user_id', 'folder_id'];
+    public function trackFiles()
+    {
+        return $this->hasMany(TrackFile::class);
+    }
 }

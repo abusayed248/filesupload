@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('track_files', function (Blueprint $table) {
+        Schema::create('folders', function (Blueprint $table) {
             $table->id();
-            $table->string('filepath')->nullable();
-            $table->foreignId('file_upload_id')->constrained()->nullable();
-            $table->bigInteger('expires_at')->nullable();
-            $table->string('password')->nullable();
-            $table->tinyInteger('is_premium')->nullable();
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('track_files');
+        Schema::dropIfExists('folders');
     }
 };
