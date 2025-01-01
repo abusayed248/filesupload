@@ -12,9 +12,9 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.29",
+        "maennchen/zipstream-php": "^2.1",
         "pion/laravel-chunk-upload": "^1.5",
         "simplesoftwareio/simple-qrcode": "^4.2",
-        "spatie/laravel-medialibrary": "^11.11",
         "stripe/stripe-php": "^16.4"
     },
     "require-dev": {

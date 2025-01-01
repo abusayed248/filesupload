@@ -77,6 +77,7 @@ Route::get('get/link/{file}', [FileUploadController::class, 'getDownloadLink'])-
 Route::post('/subscription/check', [UploadController::class, 'check'])->name('subscription.check');
 
 Route::post('/download-zip', [UploadController::class, 'downloadZip'])->name('download.zip');
+Route::get('/download-zip', [UploadController::class, 'downloadZip'])->name('download.zip');
 
 Route::get('/payment', [UploadController::class, 'showPaymentPage'])->name('payment.page');
 Route::post('/subscription/create', [UploadController::class, 'createSubscriptions'])->name('subscription.create');
@@ -88,7 +89,7 @@ Route::post('/store-filepaths', [UploadController::class, 'storeFilePaths'])->na
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/terms', [ContactController::class, 'terms'])->name('terms');
 Route::get('/privacy', [ContactController::class, 'privacy'])->name('privacy');
-
+Route::get('/force-download', [UploadController::class, 'forceDownload'])->name('force.download');
 
 // contact route
 Route::post('/message-send', [ContactController::class, 'sendMsg'])->name('contact.msg.send');
