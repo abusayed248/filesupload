@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-// use ZipArchive;
 use ZipArchive;
+use ZipStream\File;
 use App\Models\Folder;
-use Stripe\StripeClient;
 
+use Stripe\StripeClient;
 use ZipStream\ZipStream;
 use App\Models\TrackFile;
 use App\Models\UserPlans;
@@ -14,6 +14,7 @@ use App\Models\FileUpload;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use ZipStream\Option\Archive;
+use STS\ZipStream\Facades\Zip;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadFailedException;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 
@@ -42,68 +42,7 @@ class UploadController extends Controller
         return view("payment", compact("userPlan"));
     }
 
-    public function forceDownload(Request $request)
-    {
-        $fileUrl = $request->query('filepath');
-        $baseUrlToSkip = 'https://s3.eu-central-1.amazonaws.com/fileupload.io/';
-        $filePath = str_replace($baseUrlToSkip, '', $fileUrl);
-        $filePath = urldecode($filePath);
-
-        // Validate file existence
-        if (!Storage::disk('s3')->exists($filePath)) {
-            return response()->json(['error' => 'File not found'], 404);
-        }
-
-        // Generate a temporary S3 URL (useful for private files)
-        $temporaryUrl = Storage::disk('s3')->temporaryUrl($filePath, now()->addMinutes(10));
-        $fileName = basename($filePath);
-
-        // Use StreamedResponse to stream the file directly from the S3 URL
-        return new StreamedResponse(function () use ($temporaryUrl) {
-            $stream = fopen($temporaryUrl, 'r');
-            while (!feof($stream)) {
-                echo fread($stream, 8192); // Stream in chunks to reduce memory usage
-                flush(); // Ensure the data is sent to the client
-            }
-            fclose($stream);
-        }, 200, [
-            'Content-Type' => 'application/octet-stream', // Generic binary MIME type
-            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
-        ]);
-    }
-
-    public function forceDownload12(Request $request)
-    {
-        $fileUrl = $request->query('filepath');
-
-
-        $fileName = basename($fileUrl);
-        $baseUrlToSkip = 'https://s3.eu-central-1.amazonaws.com/fileupload.io/';
-        $filePath = str_replace($baseUrlToSkip, '', $fileUrl);
-        $filePath = urldecode($filePath);
-
-        // Validate file existence
-        if (!Storage::disk('s3')->exists($filePath)) {
-            return response()->json(['error' => 'File not found'], 404);
-        }
-
-        // Generate a temporary S3 URL (useful for private files)
-        $temporaryUrl = Storage::disk('s3')->temporaryUrl($filePath, now()->addMinutes(10));
-
-        // Get the file's MIME type for proper handling
-        $mimeType = Storage::disk('s3')->mimeType($filePath);
-        $fileName = basename($filePath);
-
-        // Return a streamed response to force download
-        return new StreamedResponse(function () use ($temporaryUrl) {
-            echo file_get_contents($temporaryUrl);
-        }, 200, [
-            'Content-Type' => $mimeType,  // File's original MIME type
-            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
-        ]);
-    }
-
-    public function downloadZipWithOutAws(Request $request)
+    public function downloadZip3(Request $request)
     {
         $fileUrls = $request->input('files'); // Array of file URLs
         $zipFileName = 'files-' . time() . '.zip';
@@ -134,169 +73,120 @@ class UploadController extends Controller
         // Return ZIP file for download
         return response()->download($zipFilePath)->deleteFileAfterSend(true);
     }
-
     public function downloadZip(Request $request)
     {
         $fileUrls = $request->input('files');
-        $zipFileName = 'files-' . time() . '.zip';
-    
-        // Set up the ZipStream response
-        return new StreamedResponse(function () use ($fileUrls, $zipFileName) {
-            // Set options for ZipStream
-            $options = new Archive();
-            $options->setSendHttpHeaders(true);
-            $options->setContentDisposition('attachment; filename="' . $zipFileName . '"');
-    
-            // Initialize ZipStream
-            $zip = new ZipStream(null, $options);
-    
-            // Start streaming as soon as possible
-            ob_start();
-            flush();
-    
-            foreach ($fileUrls as $fileUrl) {
-                $fileName = basename($fileUrl);
-                $baseUrlToSkip = 'https://s3.eu-central-1.amazonaws.com/fileupload.io/';
-                $filePath = str_replace($baseUrlToSkip, '', $fileUrl);
-                $filePath = urldecode($filePath);
-    
-                if (Storage::disk('s3')->exists($filePath)) {
-                    // Stream the file content directly into the ZIP archive
-                    $stream = Storage::disk('s3')->readStream($filePath);
-    
-                    // Add the file from the stream
-                    $zip->addFileFromStream($fileName, $stream);
-    
-                    // Flush to avoid memory overload
-                    fflush($zip->getStream());
-                    fclose($stream);
-                } else {
-                    Log::warning('File does not exist on S3: ' . $filePath);
-                }
-            }
-    
-            // Finalize the ZIP stream
-            $zip->finish();
-    
-            // Ensure the response is flushed and outputted
-            ob_end_flush();
-            flush();
-        }, 200, [
-            'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => 'attachment; filename="' . $zipFileName . '"',
-        ]);
-    }
-    
 
-    public function downloadZip3(Request $request)
-    {
-
-        $fileUrls = $request->input('files');
-        $zipFileName = 'files-' . time() . '.zip';
-
-        // Streamed response for downloading ZIP
-        return new StreamedResponse(function () use ($fileUrls, $zipFileName) {
-            // Set options for ZipStream
-            $options = new Archive();
-            $options->setSendHttpHeaders(true);
-            $options->setContentDisposition('attachment; filename="' . $zipFileName . '"');
-
-            // Initialize ZipStream
-            $zip = new ZipStream(null, $options);
-
-            foreach ($fileUrls as $fileUrl) {
-                $fileName = basename($fileUrl);
-                $baseUrlToSkip = 'https://s3.eu-central-1.amazonaws.com/fileupload.io/';
-                $filePath = str_replace($baseUrlToSkip, '', $fileUrl);
-                $filePath = urldecode($filePath);
-
-                if (Storage::disk('s3')->exists($filePath)) {
-                    // Stream the file content directly into the ZIP archive
-                    $stream = Storage::disk('s3')->readStream($filePath);
-
-                    $zip->addFileFromStream($fileName, $stream);
-                    fclose($stream);
-                } else {
-                    Log::warning('File does not exist on S3: ' . $filePath);
-                }
-            }
-
-            // Finalize the ZIP stream
-            $zip->finish();
-
-            // Flush the content
-            ob_flush();
-            flush();
-        }, 200, [
-            'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => 'attachment; filename="' . $zipFileName . '"',
-        ]);
-    }
-
-
-    public function downloadZip45(Request $request)
-    {
-        $fileUrls = $request->input('files');
-        $zipFileName = 'files-' . time() . '.zip';
-
-        // Streamed response for downloading ZIP
-        return new StreamedResponse(function () use ($fileUrls, $zipFileName) {
-            // Set options for ZipStream
-            $options = new Archive();
-            $options->setSendHttpHeaders(true);
-            $options->setContentDisposition('attachment; filename="' . $zipFileName . '"');
-
-            // Initialize ZipStream
-            $zip = new ZipStream(null, $options);
-
-            foreach ($fileUrls as $fileUrl) {
-                $fileName = basename($fileUrl);
-                $baseUrlToSkip = 'https://s3.eu-central-1.amazonaws.com/fileupload.io/';
-                $filePath = str_replace($baseUrlToSkip, '', $fileUrl);
-                $filePath = urldecode($filePath);
-
-                if (Storage::disk('s3')->exists($filePath)) {
-                    // Stream the file content directly into the ZIP archive
-                    $stream = Storage::disk('s3')->readStream($filePath);
-
-                    $zip->addFileFromStream($fileName, $stream);
-                    fclose($stream);
-                } else {
-                    Log::warning('File does not exist on S3: ' . $filePath);
-                }
-            }
-
-            // Finalize the ZIP stream
-            $zip->finish();
-        }, 200, [
-            'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => 'attachment; filename="' . $zipFileName . '"',
-        ]);
-    }
-
-    public function downloadZifp45(Request $request)
-    {
-
-
-        $filePaths = json_decode($request->input('files'));
-
-        // Create a new ZipArchive instance
-        $zip = new ZipArchive();
-        $zipFileName = storage_path('app/public/files.zip');
-
-        if ($zip->open($zipFileName, ZipArchive::CREATE) !== TRUE) {
-            return response()->json(['error' => 'Unable to create ZIP file'], 500);
+        if (empty($fileUrls) || !is_array($fileUrls)) {
+            return response()->json(['error' => 'No files provided'], 400);
         }
 
-        // Add each file from the file paths to the ZIP
-        foreach ($filePaths as $filePath) {
-            $fileName = basename($filePath);
+        return Zip::create('files-' . time() . '.zip', function ($zip) use ($fileUrls) {
+            foreach ($fileUrls as $fileUrl) {
+                $fileName = basename($fileUrl);
+                $baseUrlToSkip = 'https://your-s3-bucket-url/';
+                $filePath = str_replace($baseUrlToSkip, '', $fileUrl);
+                $filePath = urldecode($filePath);
+
+                if (Storage::disk('s3')->exists($filePath)) {
+                    // Stream the file directly from S3
+                    $fileStream = Storage::disk('s3')->readStream($filePath);
+                    $zip->addStream($fileName, $fileStream);
+                }
+            }
+        });
+    }
+
+
+    public function forceDownload(Request $request)
+    {
+        $filePath = $request->query('filepath');
+        $publicUrl = Storage::disk('s3')->url($filePath);
+        dd($filePath);
+        // Get MIME type and file name
+        $mimeType = Storage::disk('s3')->mimeType($filePath);
+        $fileName = basename($filePath);
+
+        // Stream the file for download
+        return response()->streamDownload(function () use ($publicUrl) {
+            echo file_get_contents($publicUrl);
+        }, $fileName, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+        ]);
+    }
+
+
+    public function downloadZi34p(Request $request)
+    {
+        $fileUrls = $request->input('files');
+
+        return Zip::create('zipFileName.zip', File::files(public_path('myFiles')));
+
+
+        if (empty($fileUrls) || !is_array($fileUrls)) {
+            return response()->json(['error' => 'No files provided'], 400);
+        }
+
+        // Set up options for streaming
+        $options = new Archive();
+        $options->setSendHttpHeaders(true);
+
+        // Create the ZIP stream
+        $zip = new ZipStream('files-' . time() . '.zip', $options);
+
+        foreach ($fileUrls as $fileUrl) {
+            $fileName = basename($fileUrl);
             $baseUrlToSkip = 'https://s3.eu-central-1.amazonaws.com/fileupload.io/';
-            $filePath = str_replace($baseUrlToSkip, '', $filePath);
+            $filePath = str_replace($baseUrlToSkip, '', $fileUrl);
             $filePath = urldecode($filePath);
+
+            try {
+                if (Storage::disk('s3')->exists($filePath)) {
+                    $fileContent = Storage::disk('s3')->get($filePath);
+                    $zip->addFile($fileName, $fileContent);
+                } else {
+                    Log::warning("File not found on S3: {$filePath}");
+                }
+            } catch (\Exception $e) {
+                Log::error("Error processing file {$filePath}: " . $e->getMessage());
+            }
+        }
+
+        // Finish the ZIP stream
+        $zip->finish();
+
+        // Response will stream the ZIP file to the client
+    }
+
+    public function downloadZip23(Request $request)
+    {
+        $fileUrls = $request->input('files');
+        $zipFileName = 'files-' . time() . '.zip';
+        $zipFilePath = storage_path('app/public/' . $zipFileName);
+
+        // Create ZIP archive
+        $zip = new ZipArchive();
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) !== true) {
+            Log::error('Failed to create ZIP file');
+            return response()->json(['error' => 'Failed to create ZIP file'], 500);
+        }
+
+        foreach ($fileUrls as $fileUrl) {
+            $fileName = basename($fileUrl);
+            $baseUrlToSkip = 'https://s3.eu-central-1.amazonaws.com/fileupload.io/';
+            $filePath = str_replace($baseUrlToSkip, '', $fileUrl);
+            $filePath = urldecode($filePath);
+
             if (Storage::disk('s3')->exists($filePath)) {
-                $fileContent = Storage::disk('s3')->get($filePath);
-                $zip->addFromString($fileName, $fileContent);
+                // Stream the file directly into the ZIP archive without loading it into memory
+                $fileStream = Storage::disk('s3')->getDriver()->readStream($filePath);
+
+                // Add file to ZIP archive from stream
+                $zip->addFromStream($fileName, $fileStream);
+
+                // Close the stream after adding to the zip
+                fclose($fileStream);
             } else {
                 Log::warning('File does not exist on S3: ' . $filePath);
             }
@@ -304,11 +194,45 @@ class UploadController extends Controller
 
         $zip->close();
 
+        // Verify file existence
+        if (!file_exists($zipFilePath)) {
+            Log::error('ZIP file not found after creation: ' . $zipFilePath);
+            return response()->json(['error' => 'ZIP file not found'], 500);
+        }
+
         // Return the ZIP file for download
-        return response()->download($zipFileName)->deleteFileAfterSend(true);
+        return response()->download($zipFilePath)->deleteFileAfterSend(true);
+    }
 
+    public function downloadZip2(Request $request)
+    {
+        $fileUrls = $request->input('files');
 
-        $fileUrls = json_decode($request->input('files'));
+        // Set up the archive options (optional)
+        $options = new Archive();
+        $options->setSendHttpHeaders(true);
+
+        // Create a new ZIP stream
+        $zip = new ZipStream('files.zip', $options);
+
+        foreach ($fileUrls as $fileUrl) {
+            $fileName = basename($fileUrl);
+
+            // Fetch file content from S3 or other storage
+            $filePath = urldecode($fileUrl);
+            if (Storage::disk('s3')->exists($filePath)) {
+                $fileContent = Storage::disk('s3')->get($filePath);
+                $zip->addFile($fileName, $fileContent);
+            }
+        }
+
+        // Finish the stream
+        $zip->finish();
+    }
+
+    public function downloadZip1(Request $request)
+    {
+        $fileUrls = $request->input('files');
         $zipFileName = 'files-' . time() . '.zip';
         $zipFilePath = storage_path('app/public/' . $zipFileName);
         // Create ZIP archive
@@ -320,7 +244,7 @@ class UploadController extends Controller
 
         foreach ($fileUrls as $fileUrl) {
             $fileName = basename($fileUrl);
-            $baseUrlToSkip = 'https://s3.eu-central-1.amazonaws.com/fileupload.io/';
+            $baseUrlToSkip = 'https://prowhatsstorage.s3.me-south-1.amazonaws.com/';
             $filePath = str_replace($baseUrlToSkip, '', $fileUrl);
             $filePath = urldecode($filePath);
             if (Storage::disk('s3')->exists($filePath)) {
@@ -441,14 +365,14 @@ class UploadController extends Controller
         // receive the file
         $save = $receiver->receive();
 
-        // // check if the upload has finished (in chunk mode it will send smaller files)
-        // if ($save->isFinished()) {
-        //     return $this->saveFileInS3($save->getFile(), $fileUpload);
-        // }
-
+        // check if the upload has finished (in chunk mode it will send smaller files)
         if ($save->isFinished()) {
             return $this->saveFileInS3($save->getFile(), $fileUpload);
         }
+
+        // if ($save->isFinished()) {
+        //     return $this->saveFile($save->getFile(), $fileUpload);
+        // }
 
 
         // we are in chunk mode, lets send the current progress
@@ -640,10 +564,33 @@ class UploadController extends Controller
         // move the file name
         $file->move($finalPath, $fileName);
 
+        $isSubscribed = 0;
+
+        if (auth()->user()) {
+            if (!auth()->user()->subscription_date) {
+                $isSubscribed = 0;
+            }
+            $expirationDate = \Carbon\Carbon::parse(auth()->user()->subscription_date)->addMonth();
+            $isSubscribed = now()->lt($expirationDate) ? 1 : 0;
+        } else {
+            $isSubscribed = 0;
+        }
+
+        // Store the file information in the database
         TrackFile::create([
             'filepath' => asset('storage/' . $filePath . '/' . $fileName),
             'file_upload_id' => $fileUpload->id,
+            'is_premium' => $isSubscribed
         ]);
+
+        // return response()->json([
+        //     'path' => Storage::disk('s3')->url(dirname($filePath)),
+        //     'name' => $fileName,
+        //     'mime_type' => $file->getMimeType(),
+        //     'fileUpload_name' => $fileUpload->name
+        // ]);
+
+
 
         return response()->json([
             'path' => asset('storage/' . $filePath),
