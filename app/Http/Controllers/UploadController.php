@@ -137,56 +137,59 @@ class UploadController extends Controller
 
     public function downloadZip(Request $request)
     {
-        $fileUrls = $request->input('files');
-        $zipFileName = 'files-' . time() . '.zip';
-    
-        // Set up the ZipStream response
-        return new StreamedResponse(function () use ($fileUrls, $zipFileName) {
-            // Set options for ZipStream
-            $options = new Archive();
-            $options->setSendHttpHeaders(true);
-            $options->setContentDisposition('attachment; filename="' . $zipFileName . '"');
-    
-            // Initialize ZipStream
-            $zip = new ZipStream(null, $options);
-    
-            // Start streaming as soon as possible
-            ob_start();
-            flush();
-    
-            foreach ($fileUrls as $fileUrl) {
-                $fileName = basename($fileUrl);
-                $baseUrlToSkip = 'https://s3.eu-central-1.amazonaws.com/fileupload.io/';
-                $filePath = str_replace($baseUrlToSkip, '', $fileUrl);
-                $filePath = urldecode($filePath);
-    
-                if (Storage::disk('s3')->exists($filePath)) {
-                    // Stream the file content directly into the ZIP archive
-                    $stream = Storage::disk('s3')->readStream($filePath);
-    
-                    // Add the file from the stream
-                    $zip->addFileFromStream($fileName, $stream);
-    
-                    // Flush to avoid memory overload
-                    fflush($zip->getStream());
-                    fclose($stream);
-                } else {
-                    Log::warning('File does not exist on S3: ' . $filePath);
+        $fileUrls = json_decode($request->query('files'), true);
+
+        $zipFileName = 'download.zip';
+
+        return response()->streamDownload(function () use ($fileUrls) {
+            $zip = new \ZipArchive;
+            $tempFile = tempnam(sys_get_temp_dir(), 'zip');
+
+            if ($zip->open($tempFile, \ZipArchive::CREATE) === true) {
+                foreach ($fileUrls as $file) {
+                    $fileContents = file_get_contents($file);
+                    $fileName = basename($file); // Extract the file name
+                    $zip->addFromString($fileName, $fileContents);
                 }
+                $zip->close();
             }
-    
-            // Finalize the ZIP stream
-            $zip->finish();
-    
-            // Ensure the response is flushed and outputted
-            ob_end_flush();
-            flush();
-        }, 200, [
-            'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => 'attachment; filename="' . $zipFileName . '"',
+
+            // Stream the file contents
+            readfile($tempFile);
+            unlink($tempFile); // Clean up the temporary file after use
+        }, $zipFileName, [
+            'Content-Type' => 'application/zip',
+            'Content-Disposition' => "attachment; filename=\"{$zipFileName}\"",
         ]);
     }
-    
+
+    public function downloadZip63(Request $request)
+    {
+
+
+        $zipFileName = 'files-' . time() . '.zip';
+        $fileUrls = json_decode($request->query('files'), true);
+
+        // Logic to create a ZIP file from the given files
+        $zipFileName = 'download.zip';
+        $zip = new \ZipArchive;
+
+        $tempFile = tempnam(sys_get_temp_dir(), $zipFileName);
+
+        if ($zip->open($tempFile, \ZipArchive::CREATE) === true) {
+            foreach ($fileUrls as $file) {
+                $fileContents = file_get_contents($file);
+                $fileName = basename($file); // Extract the file name
+                $zip->addFromString($fileName, $fileContents);
+            }
+            $zip->close();
+
+            return response()->download($tempFile, $zipFileName)->deleteFileAfterSend(true);
+        }
+
+        return response()->json(['error' => 'Unable to create ZIP file'], 500);
+    }
+
 
     public function downloadZip3(Request $request)
     {

@@ -47,9 +47,14 @@
 
 
                         <!-- The actual link for the download -->
-                        <a id="downloadZipLink" href="{{ route('download.zip', ['files' => $paths->toArray()]) }}" style="display: none;">Download ZIP</a>
+                        <!-- <a id="downloadZipLink" href="{{ route('download.zip', ['files' => $paths->toArray()]) }}" style="display: none;">Download ZIP</a> -->
 
 
+                        <a id="downloadZipLink"
+                            href="{{ route('download.zip', ['files' => json_encode($paths->toArray())]) }}"
+                            style="display: none;">
+                            Download ZIP
+                        </a>
 
 
                         @foreach($trackFile as $fileUrl)
@@ -62,8 +67,8 @@
                                 Download File
                             </button>
 
-<!-- The actual link for the download -->
-<a id="downloadLinkSingleFile" href="{{ route('force.download', ['filepath' => $fileUrl->filepath]) }}" style="display: none;">Download File</a>
+                            <!-- The actual link for the download -->
+                            <a id="downloadLinkSingleFile" href="{{ route('force.download', ['filepath' => $fileUrl->filepath]) }}" style="display: none;">Download File</a>
 
                             <br><br>
                         </div>
@@ -126,7 +131,6 @@
     document.getElementById('downloadAllBtn').addEventListener('click', function() {
 
         const password = @json($fileUpload->password);
-console.log(password,'password');
         // If there are files that require a password, show the modal to ask for it
         if (password) {
             const passwordModal = new bootstrap.Modal(document.getElementById('passwordModalZip'));
@@ -171,7 +175,6 @@ console.log(password,'password');
             const filePath = document.getElementById('downloadFilePath').value;
             const isZipDownload = document.getElementById('isZipDownload').value;
             console.log(enteredPassword, 'enteredPassword');
-console.log(enteredPassword,'enteredPassword');
             const correctPassword = @json($fileUpload->password);
             if (enteredPassword === correctPassword) {
                 const passwordModal = bootstrap.Modal.getInstance(document.getElementById('passwordModalZip'));
