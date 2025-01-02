@@ -54,6 +54,7 @@ protected $routeMiddleware = [
     // Other middlewares...
     'check.magic.link' => \App\Http\Middleware\CheckMagicLink::class,
     'auth.redirect' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,
+    'contact.access' => \App\Http\Middleware\ContactAccessMiddleware::class,
 
 ];
     /**
