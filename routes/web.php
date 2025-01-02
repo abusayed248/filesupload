@@ -94,3 +94,7 @@ Route::get('/force-download', [UploadController::class, 'forceDownload'])->name(
 // contact route
 Route::post('/message-send', [ContactController::class, 'sendMsg'])->name('contact.msg.send');
 
+// update contact info
+Route::get('/update-contact-info', [ContactController::class, 'updateContactInfo'])->name('update.contact.info');
+Route::post('/update-contact-info', [ContactController::class, 'updateContactInfoStatus'])->name('update.company.status');
+

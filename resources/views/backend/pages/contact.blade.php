@@ -51,36 +51,43 @@
                     </div>
                     <div class="col-md-5 ">
                         <div class="mt-5 p-4 gap-10">
-                          
-                            <h5 class=" border-bottom pb-3">Contact Form</h5>
-                            <div class="footLogo con_logo">
-                                <img class="img-fluid" src="{{ asset('files') }}/static_img/File.png" alt="">
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class=" border-bottom pb-3">Contact Form</h5>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <h5 class=" border-bottom pb-3"><a href="{{ route('update.contact.info') }}" class="update_info_link">Update contact info</a></h5>
+                                </div>
                             </div>
-                            <p class="text-center">You can contact us using the mail addresses stated on the left side. You can also use the contact us form and send us a message directly. We will respond to abuse requests ASAP (up to at most 5 business days ) and all other inquiries in 5 business days.</p>
+                            <div class="footLogo con_logo">
+                                <img class="img-fluid" src="{{ asset($contact_info->photo) }}" alt="">
+                            </div>
+                            <p class="text-center">{{ $contact_info->description }}</p>
                             <div class="gap-10">
                                 <div>
                                     <i class="fa-solid fa-users"></i>
-                                    <span class="text-bold">Company:</span><span> Ingenium Yazilm</span>
+                                    <span class="text-bold">Company:</span><span> {{ $contact_info->company }}</span>
                                 </div>
                                 <div>
                                     <i class="fa-solid fa-hashtag"></i>
-                                    <span class="text-bold">Tax No:</span><span> 024100</span>
+                                    <span class="text-bold">Tax No:</span><span> {{ $contact_info->text_no }}</span>
                                 </div>
                                 <div>
                                     <i class="fa-solid fa-location-dot"></i>
-                                    <span class="text-bold">Address:</span><span>Göztepe Mh.26 Kadikoy / Istanbul</span>
+                                    <span class="text-bold">Address:</span><span>{{ $contact_info->address }}</span>
                                 </div>
                                 <div>
                                     <i class="fa-solid fa-phone"></i>
-                                    <span class="text-bold">Tel:</span><span>+90 216 3594224</span>
+                                    <span class="text-bold">Tel:</span><span>{{ $contact_info->tel }}</span>
                                 </div>
                                 <div>
                                     <i class="fa-regular fa-envelope"></i>
-                                    <span class="text-bold">E-mail:</span><span>contact@filesupload.io</span>
+                                    <span class="text-bold">E-mail:</span><span>{{ $contact_info->email }}</span>
                                 </div>
                                 <div>
                                     <i class="fa-brands fa-twitter"></i>
-                                    <span class="text-bold">Twitter:</span><span>@filesupload_io</span>
+                                    <span class="text-bold">Twitter:</span><span>{{ $contact_info->twitter }}</span>
                                 </div>
                             </div>
                               

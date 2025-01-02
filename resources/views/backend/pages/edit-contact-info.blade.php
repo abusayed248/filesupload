@@ -1,0 +1,157 @@
+
+@extends('layouts.app')
+
+@section('title', 'Contact')
+
+@section('content')
+    <section class="">
+       <div class="container">
+           <div class="row mt-5">
+                    <div class="col-md-7  border-right">
+                        <div class="mt-5 p-4">
+                            @if (session('status'))
+                                <div class="alert alert-success">
+                                    {{ session('status') }}
+                                </div>
+                            @endif
+                            <h5 class=" border-bottom pb-3">Contact Form</h5>
+                            <p class="text-center"><span class="text-bold">For Abuse and Copyright Infringement Reports: </span>abuse@filesupload.io <br>
+                              <span class="text-bold">  For General Help: </span>support@filesupload.io</p>
+
+                                <form class="gap-10" action="{{ route('contact.msg.send') }}" method="post">
+                                    @csrf
+
+                                    <div class="form-group">
+                                        <label >Name</label>
+                                      <div class="d-flex align-items-center input-border mt-3">
+                                        <input type="text" name="name" class="form-control" >
+                                        <i class="fa-solid fa-user p-3"></i>
+                                      </div>
+                                     
+                                    </div>
+                                    <div class="form-group">
+                                        <label >Email</label>
+                                        <div class="d-flex align-items-center input-border mt-3">
+                                            <input type="email" name="email" class="form-control" >
+                                            <i class="fa-regular fa-envelope p-3"></i>
+                                          </div>
+                                      </div>
+                                    <div class="form-group">
+                                      <label >Message</label>
+                                      <div class="d-flex align-items-center input-border mt-3">
+                                        <textarea name="message" type="text" class="form-control"></textarea>
+                                      <i class="fa-solid fa-pen-nib p-3"></i>
+                                      </div>
+                                    </div>
+                                   <div class="d-flex justify-content-lg-center">
+                                    <button type="submit" class="btn btn-success ">Submit</button>
+                                   </div>
+                                </form>
+                        </div>
+                    </div>
+                    <div class="col-md-5 ">
+                        <div class="mt-5 p-4 gap-10">
+                            @if (session('infostatus'))
+                                <div class="alert alert-success py-3">
+                                    {{ session('infostatus') }}
+                                </div>
+                            @endif
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class=" border-bottom pb-3">Update Contact Info</h5>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <h5 class=" border-bottom pb-3"><a href="{{ route('contact') }}" class="update_info_link">Back</a></h5>
+                                </div>
+                            </div>
+                            
+                            
+                            <form class="gap-10" action="{{ route('update.company.status') }}" method="post" enctype="multipart/form-data">
+                                @csrf
+
+                                <input type="hidden" name="id" value="{{ $info->id }}">
+
+                                <div class="form-group">
+                                    <label >Company</label>
+                                    <div class="d-flex align-items-center input-border mt-3">
+                                        <input type="text" name="company_name" class="form-control"  value="{{ $info->company_name }}">
+                                    </div>
+                                 
+                                </div>
+
+                                <div class="form-group">
+                                    <label >Tax No</label>
+                                    <div class="d-flex align-items-center input-border mt-3">
+                                        <input type="text" name="text_no" class="form-control" value="{{ $info->text_no }}">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label >Adress</label>
+                                    <div class="d-flex align-items-center input-border mt-3">
+                                        <input type="text" name="address" class="form-control"  value="{{ $info->address }}">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label >Tel</label>
+                                    <div class="d-flex align-items-center input-border mt-3">
+                                        <input type="text" name="tel" class="form-control"  value="{{ $info->tel }}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label >Email</label>
+                                    <div class="d-flex align-items-center input-border mt-3">
+                                        <input type="email" name="email" class="form-control"  value="{{ $info->email }}">
+                                      </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label >Twitter</label>
+                                    <div class="d-flex align-items-center input-border mt-3">
+                                        <input type="text" name="twitter" class="form-control"  value="{{ $info->twitter }}">
+                                      </div>
+                                </div>
+
+                                <div class="form-group">
+                                  <label >Description</label>
+                                  <div class="d-flex align-items-center input-border mt-3">
+                                    <textarea name="description" type="text" class="form-control">{{ $info->description }}</textarea>
+                                  </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="form-group col-md-6">
+                                        <label >Company Logo</label>
+                                        <div class="d-flex align-items-center input-border mt-3">
+                                            <input name="photo" type="file" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-end  col-md-6">
+                                        <label >Existing Company Logo</label>
+                                        <div class="mt-3">
+                                            <input type="hidden" name="old_photo" value="{{ $info->photo }}">
+                                            <img src="{{ asset($info->photo) }}" height="20" width="100" alt="" class="img-fluid">
+                                        </div>
+                                    </div>
+                                </div>
+
+                               <div class="d-flex justify-content-lg-center">
+                                <button type="submit" class="btn btn-success ">Update</button>
+                               </div>
+                            </form>
+                              
+                        </div>
+                    </div>
+                </div>
+            </div> 
+     
+    </section>
+
+   
+@endsection
+   
+ 
+    
+

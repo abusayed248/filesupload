@@ -286,3 +286,7 @@ width: 50%;
     font-style: italic;
   }
   /* terms start end */
+
+  .update_info_link {
+    color: #33aaa3e3;
+}
