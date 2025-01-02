@@ -63,6 +63,7 @@
                                 </div>
                                 @endif
                             </div>
+                            
                             <div class="footLogo con_logo">
                                 <img class="img-fluid" src="{{ asset($contact_info->photo) }}" alt="">
                             </div>
