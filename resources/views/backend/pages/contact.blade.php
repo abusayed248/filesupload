@@ -71,7 +71,7 @@
                             <div class="gap-10">
                                 <div>
                                     <i class="fa-solid fa-users"></i>
-                                    <span class="text-bold">Company:</span><span> {{ $contact_info->company }}</span>
+                                    <span class="text-bold">Company:</span><span> {{ $contact_info->company_name }}</span>
                                 </div>
                                 <div>
                                     <i class="fa-solid fa-hashtag"></i>
