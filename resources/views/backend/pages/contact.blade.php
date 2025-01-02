@@ -67,6 +67,7 @@
                             <div class="footLogo con_logo">
                                 <img class="img-fluid" src="{{ asset($contact_info->photo) }}" alt="">
                             </div>
+                            
                             <p class="text-center">{{ $contact_info->description }}</p>
                             <div class="gap-10">
                                 <div>
