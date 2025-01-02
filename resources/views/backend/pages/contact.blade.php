@@ -57,12 +57,13 @@
                                     <h5 class=" border-bottom pb-3">Contact Form</h5>
                                 </div>
 
-                                @if(auth()->user()->role == 'admin')
+                                @if(auth()->check() && auth()->user()->role == 'admin')
                                 <div class="col-md-6 text-end">
                                     <h5 class=" border-bottom pb-3"><a href="{{ route('update.contact.info') }}" class="update_info_link">Update contact info</a></h5>
                                 </div>
                                 @endif
                             </div>
+                            
                             <div class="footLogo con_logo">
                                 <img class="img-fluid" src="{{ asset($contact_info->photo) }}" alt="">
                             </div>
