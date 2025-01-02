@@ -46,7 +46,7 @@
                     <!-- Display the file name -->
                     <td>
                         <!-- Download Button -->
-                        <a href="{{ $trackFile->filepath }}" style="width: auto !important;" target="_blank" class="btn btn-primary" download>
+                        <a href="{{ route('force.download', ['filepath' => $trackFile->filepath]) }}" style="width: auto !important;" target="_blank" class="btn btn-primary" download>
                             Download
                         </a>
 

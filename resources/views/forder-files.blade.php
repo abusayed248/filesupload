@@ -19,9 +19,7 @@
                     <tr>
                         <td>{{ basename($trackFile->filepath) }}</td> <!-- Display the file name -->
                         <td>
-                            <a href="{{ $trackFile->filepath }}" target="_blank" class="btn btn-primary" download>
-                                Download
-                            </a>
+                            <a id="downloadLinkSingleFile" href="{{ route('force.download', ['filepath' => $trackFile->filepath]) }}" >Download File</a>
                         </td>
                     </tr>
                 @endforeach
