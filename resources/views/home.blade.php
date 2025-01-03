@@ -3,8 +3,6 @@
 
 <head>
     <!-- Required meta tags -->
-
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,11 +25,12 @@
                     <p class="text-center titel">File upload made easy. Upload files up to 20GB and transfer files easily</p>
                     <div class="d-flex justify-content-center mt-4">
                         <div class="file-upload-container col-md-5 pt-4 pb-4">
-
-
                             <div class="card-body">
                                 <div id="upload-container" class="text-center">
-                                    <span id="browseFile" class="btn btn-primary" multiple>Browse File</span>
+                                    <div id="drop-area" class="drop-area p-4 border border-dashed" style="min-height: 150px;">
+                                        <span class="btn btn-primary" id="browseFile">Browse File</span>
+                                        <p class="mt-2">Or drag and drop your files here</p>
+                                    </div>
                                 </div>
                                 <div style="display: none" class="progress mt-3" style="height: 25px">
                                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%; height: 100%">75%</div>
@@ -40,6 +39,7 @@
                                 <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
                             </div>
 
+                            <!-- Modal for upload details -->
                             <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -76,7 +76,6 @@
                                 <div id="filePreviews" class="row"></div>
                             </div>
 
-
                             <label for="file-upload">
                                 <p>Click here or drop files to upload or transfer</p>
                                 <small>(Max 50 files, 10 GB per file, total 100 GB)</small>
@@ -84,7 +83,7 @@
                                 <a href="#" class="premium-link">Upgrade to premium to upload files up to 20GB</a>
                             </label>
                         </div>
-                    </div>
+                           </div>
                 </div>
                 <div class="row justify-content-between align-items-center mt-5">
                     <div class="col-md-4 text-center">
@@ -319,10 +318,7 @@
         </div>
     </section>
     @include('backend.components.footer')
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script type="text/javascript">
@@ -332,11 +328,10 @@
         let filesUploaded = 0;
         let filePaths = [];
         let userPassword = '';
-        let totalSize = 0; //
+        let totalSize = 0; 
         let userExpiryDate = '';
         var uniqueString = Math.random().toString(36).substr(2, 8);
         const paymentPageUrl = "{{ route('payment.page') }}";
-
 
         // Initialize Resumable.js
         var r = new Resumable({
@@ -345,19 +340,12 @@
                 _token: '{{ csrf_token() }}',
             },
             fileType: [
-                // Images
                 'png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg', 'webp',
-                // Videos
                 'mp4', 'mkv', 'avi', 'mov', 'wmv', 'flv', 'webm',
-                // Audio
                 'mp3', 'wav', 'ogg', 'aac', 'flac',
-                // Archives
                 'zip', 'rar', '7z', 'tar', 'gz',
-                // Documents
                 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt',
-                // Programming files
                 'html', 'css', 'js', 'json', 'xml', 'sql', 'py', 'java', 'php', 'c', 'cpp', 'cs', 'rb', 'go', 'ts',
-                // Other
                 'apk', 'exe', 'dll', 'iso', 'dmg'
             ],
             chunkSize: 2 * 1024 * 1024, // 2 MB chunks
@@ -369,75 +357,64 @@
         });
 
         r.assignBrowse(browseFile[0]);
+        // Drag-and-drop functionality
+        var dropArea = $('#drop-area');
+        r.assignDrop(dropArea[0]);
 
         r.on('fileAdded', function(files) {
             totalFiles = r.files.length;
             totalSize = r.files.reduce((sum, file) => sum + file.size, 0);
-
             $('#uploadModal').modal('show');
         });
 
-        // Handle the Start Upload button click
         $('#startUpload').on('click', function() {
             userPassword = $('#password').val();
             userExpiryDate = $('#expiryDate').val();
             r.opts.query.password = userPassword;
             r.opts.query.expiry_date = userExpiryDate;
             r.opts.query.name = uniqueString
+            r.opts.query.total_size = totalSize;
 
-            r.opts.query.total_size = totalSize; // Pass the total size
-
-            $('#uploadModal').modal('hide'); // Close the modal
+            $('#uploadModal').modal('hide');
             const totalSizeInGB = (totalSize / (1024 * 1024 * 1024)).toFixed(2);
             if (totalSizeInGB > 20) {
-
-
                 $.ajax({
-                    url: '{{ route('subscription.check') }}', // Replace with your route to check subscription
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-            },
+                    url: '{{ route('subscription.check') }}',
+                    type: 'POST',
+                    data: { _token: '{{ csrf_token() }}' },
                     success: function(response) {
                         if (response.isSubscribed) {
-                            console.log(response.isSubscribed,'response.isSubscribed');
-                            // User is subscribed, proceed with upload
-                            showProgress(); // Show the upload progress
-                            r.upload(); // Start the upload
+                            showProgress();
+                            r.upload();
                         } else {
                             r.pause();
-                            // User is not subscribed, show error message
                             $('#errorMessage').text('The total file size exceeds 1GB. Please subscribe to upload larger files.').show();
                             window.location.href = paymentPageUrl;
                         }
                     },
                     error: function() {
                         r.pause();
-                        // Handle AJAX error
                         $('#errorMessage').text('The total file size exceeds 20GB. Please subscribe to upload larger files.').show();
                         window.location.href = paymentPageUrl;
                     }
                 });
-                // $('#errorMessage').text('The total file size exceeds 20GB. Please upgrade plan for upload more than 20GB.').show();
             } else {
-                showProgress(); // Show the upload progress
-                r.upload(); // Start the upload
+                showProgress();
+                r.upload();
             }
         });
 
-        // File progress event
         r.on('fileProgress', function(file) {
             updateProgress(Math.floor(file.progress() * 100));
         });
 
-        // File success event
         r.on('fileSuccess', function(file, response) {
             response = JSON.parse(response);
-            filesUploaded++; // Increment when a file upload is successful
+            filesUploaded++;
             filePaths.push(response.path + '/' + response.name);
 
             if (filesUploaded === totalFiles) {
-               const downloadLink = `/get/link/${response.fileUpload_name}`;
+                const downloadLink = `/get/link/${response.fileUpload_name}`;
                 window.location.href = downloadLink;
             }
         });
@@ -446,43 +423,19 @@
             alert('File uploading error.');
         });
 
-        // Show the upload progress bar
         let progress = $('.progress');
 
         function showProgress() {
             progress.find('.progress-bar').css('width', '0%');
             progress.find('.progress-bar').html('0%');
-            progress.find('.progress-bar').removeClass('bg-success');
             progress.show();
         }
 
-        function saveFilePathsToServer(filePaths) {
-            $.ajax({
-                url: '{{ route('store.filepaths') }}',
-                
-                method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    file_paths: filePaths
-                },
-                success: function(response) {
-                    console.log('File paths saved successfully:', response);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error saving file paths:', error);
-                }
-            });
-        }
-
         function updateProgress(value) {
-            progress.find('.progress-bar').css('width', `${value}%`);
-            progress.find('.progress-bar').html(`${value}%`);
-            if (value === 100) {
-                progress.find('.progress-bar').addClass('bg-success');
-            }
+            progress.find('.progress-bar').css('width', value + '%');
+            progress.find('.progress-bar').html(value + '%');
         }
     </script>
-
 </body>
 
 </html>
