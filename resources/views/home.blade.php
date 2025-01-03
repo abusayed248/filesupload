@@ -318,7 +318,6 @@
         </div>
         </div>
     </section>
-    
     @include('backend.components.footer')
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -335,18 +334,32 @@
         let userPassword = '';
         let totalSize = 0; //
         let userExpiryDate = '';
-        var uniqueString = Math.random().toString(36).substr(2, 8); 
+        var uniqueString = Math.random().toString(36).substr(2, 8);
         const paymentPageUrl = "{{ route('payment.page') }}";
 
 
         // Initialize Resumable.js
         var r = new Resumable({
             target: '{{ route('upload.store') }}',
-            
             query: {
                 _token: '{{ csrf_token() }}',
             },
-            fileType: ['png', 'jpg', 'jpeg', 'mp4', 'zip'],
+            fileType: [
+                // Images
+                'png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg', 'webp',
+                // Videos
+                'mp4', 'mkv', 'avi', 'mov', 'wmv', 'flv', 'webm',
+                // Audio
+                'mp3', 'wav', 'ogg', 'aac', 'flac',
+                // Archives
+                'zip', 'rar', '7z', 'tar', 'gz',
+                // Documents
+                'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt',
+                // Programming files
+                'html', 'css', 'js', 'json', 'xml', 'sql', 'py', 'java', 'php', 'c', 'cpp', 'cs', 'rb', 'go', 'ts',
+                // Other
+                'apk', 'exe', 'dll', 'iso', 'dmg'
+            ],
             chunkSize: 2 * 1024 * 1024, // 2 MB chunks
             headers: {
                 'Accept': 'application/json'
