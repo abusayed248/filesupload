@@ -22,6 +22,9 @@ html{
   .text-bold{
     font-weight: bold;
   }
+  .header_logo{
+    width: 250px;
+  }
   .navSection {
     background-color: #33aaa3e3;
   }
