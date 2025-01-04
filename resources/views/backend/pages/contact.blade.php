@@ -63,37 +63,43 @@
                                 </div>
                                 @endif
                             </div>
-                            
+                         
+                          
                             <div class="footLogo con_logo">
-                                <img class="img-fluid" src="{{ asset($contact_info->photo) }}" alt="">
+                                <img class="img-fluid" src=" @isset ($contact_info->photo) {{ asset($contact_info->photo) }} @endisset " alt="">
                             </div>
+                        
+                           
+                    
+                            <p class="text-center">@isset ($contact_info->description ) {{ $contact_info->description }} @endisset</p>
+                       
                             
-                            <p class="text-center">{{ $contact_info->description }}</p>
+                          
                             <div class="gap-10">
                                 <div>
                                     <i class="fa-solid fa-users"></i>
-                                    <span class="text-bold">Company:</span><span> {{ $contact_info->company_name }}</span>
+                                    <span class="text-bold">Company:</span><span>@isset ( $contact_info->company_name ) {{ $contact_info->company_name }} @endisset </span>
                                 </div>
                                 <div>
                                     <i class="fa-solid fa-hashtag"></i>
-                                    <span class="text-bold">Tax No:</span><span> {{ $contact_info->text_no }}</span>
+                                    <span class="text-bold">Tax No:</span><span>@isset ( $contact_info->text_no  )  {{ $contact_info->text_no }} @endisset </span>
                                 </div>
                                 <div>
                                     <i class="fa-solid fa-location-dot"></i>
-                                    <span class="text-bold">Address:</span><span>{{ $contact_info->address }}</span>
+                                    <span class="text-bold">Address:</span><span>@isset ( $contact_info->address  )  {{ $contact_info->address }} @endisset </span>
                                 </div>
                                 <div>
                                     <i class="fa-solid fa-phone"></i>
-                                    <span class="text-bold">Tel:</span><span>{{ $contact_info->tel }}</span>
+                                    <span class="text-bold">Tel:</span><span>@isset ( $contact_info->tel  )   {{ $contact_info->tel }} @endisset </span>
                                 </div>
 
                                 <div>
                                     <i class="fa-regular fa-envelope"></i>
-                                    <span class="text-bold">E-mail:</span><span>{{ $contact_info->email }}</span>
+                                    <span class="text-bold">E-mail:</span><span>@isset ($contact_info->email  )   {{ $contact_info->email }} @endisset </span>
                                 </div>
                                 <div>
                                     <i class="fa-brands fa-twitter"></i>
-                                    <span class="text-bold">Twitter:</span><span>{{ $contact_info->twitter }}</span>
+                                    <span class="text-bold">Twitter:</span><span> @isset ($contact_info->twitter  )    {{ $contact_info->twitter }} @endisset </span>
                                 </div>
                                 
                             </div>
