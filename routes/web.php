@@ -41,6 +41,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/contact', [ContactController::class, 'updateContact'])->name('contact.update');
 });
 
+Route::middleware(['auth'])->group(function () {
+    // Show the Reset Password Form
+    Route::get('/reset-password', [MagicLinkController::class, 'showResetPasswordForm'])->name('password.reset.form');
+
+    // Handle Reset Password Request
+    Route::post('/reset-password', [MagicLinkController::class, 'resetPassword'])->name('password.update');
+});
+
 
 Route::get('/', function () {
     return view('home');
