@@ -1,5 +1,5 @@
 
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Contact info edit')
 
@@ -14,12 +14,12 @@
                                     {{ session('infostatus') }}
                                 </div>
                             @endif
-                            <div class="row">
+                            <div class="row border-bottom">
                                 <div class="col-md-6">
-                                    <h5 class=" border-bottom pb-3">Update Contact Info</h5>
+                                    <h5 class="  pb-3">Update Contact Info</h5>
                                 </div>
                                 <div class="col-md-6 text-end">
-                                    <h5 class=" border-bottom pb-3"><a href="{{ route('contact') }}" class="update_info_link">Back</a></h5>
+                       
                                 </div>
                             </div>
                             

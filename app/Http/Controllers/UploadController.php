@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 // use ZipArchive;
 use ZipArchive;
 use App\Models\Folder;
-use Stripe\StripeClient;
+use App\Models\Policy;
 
+use Stripe\StripeClient;
 use ZipStream\ZipStream;
 use App\Models\TrackFile;
 use App\Models\UserPlans;
@@ -34,6 +35,16 @@ class UploadController extends Controller
     {
         return view('upload');
     }
+
+
+    public function showPrivacy()
+    {
+      
+        $policy = Policy::where('title', 'Privacy Policy')->first();
+       
+        return view('policy.show', compact('policy'));
+    }
+
 
 
     public function showPaymentPage()

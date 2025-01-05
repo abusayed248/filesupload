@@ -1,8 +1,4 @@
-@extends('layouts.app')
-
-@section('title', 'PRIVACY POLICY')
-
-
+@extends('layouts.admin')
 
 @section('content')
 <div class="container">

@@ -91,10 +91,16 @@ class MagicLinkController extends Controller
         // Log the user in
         auth()->login($user);
 
+
+
         // Delete the token after use
         $magicLink->delete();
-
-        return redirect('/');  // Redirect to the home page or any protected route
+        if ($user->role == 'admin') {
+            return redirect()->route('allfiles.index');
+        } else {
+            return redirect('/');
+        }
+        //  return redirect('/');  // Redirect to the home page or any protected route
     }
 
     // logout
@@ -130,8 +136,12 @@ class MagicLinkController extends Controller
         // Clear the token from the database
         $user->login_token = null;
         $user->save();
-
-        return redirect()->route('dashboard'); // Redirect to a protected page, e.g., dashboard
+        if ($user->role == 'admin') {
+            return redirect()->route('allfiles.index');
+        } else {
+            return redirect()->route('dashboard');
+        }
+        // Redirect to a protected page, e.g., dashboard
     }
 
     public function sendLoginLink(Request $request)

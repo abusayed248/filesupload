@@ -2,10 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Backend\FileUploadController;
 use App\Http\Controllers\Backend\Auth\MagicLinkController;
+use App\Http\Controllers\TermsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +22,24 @@ use App\Http\Controllers\Backend\Auth\MagicLinkController;
 */
 
 
+
+
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('admin/privacy-policy', [PolicyController::class, 'show'])->name('privacy-policy.index');
+    Route::get('/admin/privacy-policy/edit', [PolicyController::class, 'edit'])->name('policy.edit');
+    Route::post('/admin/privacy-policy/edit', [PolicyController::class, 'update'])->name('policy.update');
+
+
+    Route::get('admin/terms', [TermsController::class, 'show'])->name('terms.index');
+    Route::get('/admin/terms/edit', [TermsController::class, 'edit'])->name('terms.edit');
+    Route::post('/admin/terms/edit', [TermsController::class, 'update'])->name('terms.update');
+
+    Route::get('/admin/contact', [ContactController::class, 'editContact'])->name('contact.index');
+    Route::get('/admin/contact/edit', [ContactController::class, 'edit'])->name('contact.edit');
+    Route::post('/admin/contact', [ContactController::class, 'updateContact'])->name('contact.update');
+});
 
 
 Route::get('/', function () {
@@ -45,13 +66,13 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('all-files', [UploadController::class, 'showFilesByFolder'])->name('files.index');
-    // Route::get('/files/download/{filePath}', [UploadController::class, 'downloadFile'])->name('files.download');
+    Route::get('/files/download/{filePath}', [UploadController::class, 'downloadFile'])->name('files.download');
 
     Route::get('files2333', [UploadController::class, 'showFilesByFolder'])->name('upload.index');
 
     Route::get('/files/download/{filePath}', [UploadController::class, 'downloadFile'])->name('files.download');
 
-    Route::get('folder-files', [UploadController::class, 'showAllFileFolder'])->name('allfiles.index');
+    Route::get('admin/folder-files', [UploadController::class, 'showAllFileFolder'])->name('allfiles.index');
 
     Route::delete('files/{fileId}/delete', [UploadController::class, 'deleteFile'])->name('files.delete');
 });
@@ -96,6 +117,6 @@ Route::post('/message-send', [ContactController::class, 'sendMsg'])->name('conta
 
 // update contact info
 Route::middleware(['contact.access'])->group(function () {
-    Route::get('/update-contact-info', [ContactController::class, 'updateContactInfo'])->name('update.contact.info');
+    Route::get('admin/update-contact-info', [ContactController::class, 'updateContactInfo'])->name('update.contact.info');
     Route::post('/update-contact-info', [ContactController::class, 'updateContactInfoStatus'])->name('update.company.status');
 });
