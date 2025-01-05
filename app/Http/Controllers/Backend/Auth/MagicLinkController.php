@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 
 class MagicLinkController extends Controller
 {
@@ -121,6 +122,35 @@ class MagicLinkController extends Controller
         return view('auth.magic-link');
     }
 
+
+    // Handle login
+    public function adminLoginStore(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        // Attempt to authenticate
+        if (Auth::attempt($request->only('email', 'password'), $request->remember)) {
+            // Redirect to intended URL or default dashboard
+            return redirect()->route('allfiles.index');
+        }
+
+        throw ValidationException::withMessages([
+            'email' => __('Invalid credentials provided.'),
+        ]);
+    }
+
+
+    public function adminLogin()
+    {
+        if (auth()->check()) {
+            return redirect()->route('home'); // Replace 'dashboard' with your actual route name
+        }
+        return view('auth.login-email');
+    }
     public function loginWithToken($token)
     {
         // Find the user with the given token

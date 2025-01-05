@@ -25,6 +25,6 @@ class PolicyController extends Controller
         $policy = Policy::where('title', 'Privacy Policy')->firstOrFail();
         $policy->update(['content' => $request->input('content')]);
 
-        return redirect()->route('policy.show')->with('success', 'Privacy Policy updated successfully.');
+        return redirect()->route('privacy-policy.index')->with('success', 'Privacy Policy updated successfully.');
     }
 }

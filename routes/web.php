@@ -77,7 +77,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('files/{fileId}/delete', [UploadController::class, 'deleteFile'])->name('files.delete');
 });
 
+Route::post('admin/login', [MagicLinkController::class, 'adminLoginStore'])->name('admin-login');
+
 Route::get('/login', [MagicLinkController::class, 'login']);
+Route::get('admin/login', [MagicLinkController::class, 'adminLogin']);
 Route::post('/login', [MagicLinkController::class, 'store'])->name('login');
 
 Route::get('/login/token/{token}', [MagicLinkController::class, 'loginWithToken'])->name('login.token');

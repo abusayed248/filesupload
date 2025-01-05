@@ -26,6 +26,6 @@ class TermsController extends Controller
     'title' => $request->input('title'),
     ]);
 
-        return redirect()->route('terms.show')->with('success', 'Privacy Terms updated successfully.');
+        return redirect()->route('terms.index')->with('success', 'Privacy Terms updated successfully.');
     }
 }
