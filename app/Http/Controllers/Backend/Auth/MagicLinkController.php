@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
@@ -20,6 +21,36 @@ class MagicLinkController extends Controller
     {
         return view('auth.magic-link');
     }
+
+    // Show the Reset Password Form for Logged-In Users
+    public function showResetPasswordForm()
+    {
+        return view('auth.reset-password');
+    }
+
+    // Handle Password Reset Logic
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        // Check if current password matches
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+        }
+
+        // Update the password
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return redirect()->route('allfiles.index')->with('status', 'Password reset successfully!');
+    }
+
     // Send Magic Link to User's Email
     public function sendMagicLink(Request $request)
 

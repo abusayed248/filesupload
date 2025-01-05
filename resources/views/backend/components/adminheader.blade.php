@@ -66,6 +66,8 @@
                             @endguest
 
                             @auth
+                            <a class="nav-link" href="{{ route('password.reset.form') }}">Reset Password</a>
+
                             <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log Out</a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
