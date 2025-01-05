@@ -20,9 +20,7 @@
                             <a class="nav-link" href="{{route('contact')}}">Contact Us</a>
                         </li>
                         <li class="nav-item">
-                            @if(auth()->user() && auth()->user()->role == 'admin')
-                            <a class="nav-link" href="{{ route('allfiles.index') }}">All files</a>
-                            @elseif(auth()->user())
+                            @if(auth()->user())
                             <a class="nav-link" href="{{ route('files.index') }}">My files</a>
                             @endif
                         </li>

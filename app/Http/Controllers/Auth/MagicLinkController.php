@@ -16,25 +16,27 @@ use Illuminate\Support\Facades\Mail;
 
 class MagicLinkController extends Controller
 {
-    public function dmca (){
+    public function dmca()
+    {
         return view('dmca');
     }
-    public function magiLinkView (){
+    public function magiLinkView()
+    {
         return view('auth.magic-link');
     }
     // Send Magic Link to User's Email
     public function sendMagicLink(Request $request)
 
     {
-   
+
         $request->validate([
             'email' => 'required|email',
         ]);
 
         $email = $request->input('email');
-      
+
         $token = Str::random(60);  // Generate a random token
-   
+
         $expiresAt = Carbon::now()->addMinutes(15);  // Token expiration time
         // dd($expiresAt);
         // Store the magic link token in the database
@@ -73,7 +75,6 @@ class MagicLinkController extends Controller
 
             return redirect()->back()->with('success', 'Login link sent successfully to your email.');
         }
-        
     }
 
     // Handle User Login via Magic Link
@@ -94,11 +95,14 @@ class MagicLinkController extends Controller
 
         // Log the user in
         auth()->login($user);
-
         // Delete the token after use
-        $magicLink->delete();
-
-        return redirect('/');  // Redirect to the home page or any protected route
+        //    $magicLink->delete();
+        if ($user->role == 'admin') {
+            return redirect('allfiles.index');
+        } else {
+            return redirect('/');
+        }
+        // Redirect to the home page or any protected route
     }
 
     // logout
@@ -111,6 +115,4 @@ class MagicLinkController extends Controller
 
         return redirect()->route('login')->with('status', 'You have been successfully logged out.');
     }
-
-
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Terms;
+use App\Models\Policy;
 use App\Mail\ContactMail;
 use App\Models\ContactInfo;
 use Illuminate\Support\Str;
@@ -11,45 +13,53 @@ use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
-   public function index()
-   {
+    public function index()
+    {
         $contact_info = ContactInfo::first();
-       return view('backend.pages.contact', compact('contact_info'));
-   }
+        return view('backend.pages.contact', compact('contact_info'));
+    }
 
-   // terms page
-   public function terms()
-   {
-       return view('backend.pages.terms');
-   }
-   // privacy page
-   public function privacy()
-   {
-       return view('backend.pages.privacy');
-   }
-   // message send
-   public function sendMsg(Request $request)
-   {
-    $mailData = [
+    public function editContact()
+    {
+        $contact_info = ContactInfo::first();
+        return view('backend.pages.contact-admin', compact('contact_info'));
+    }
 
-        'name' => $request->name,
+    // terms page
+    public function terms()
+    {
+        $terms = Terms::query()->first();
+        return view('backend.pages.terms', compact('terms'));
+    }
+    // privacy page
+    public function privacy()
+    {
+        $policy = Policy::where('title', 'Privacy Policy')->first();
+        return view('backend.pages.privacy', compact('policy'));
+    }
+    // message send
+    public function sendMsg(Request $request)
+    {
+        $mailData = [
 
-        'message' => $request->message,
+            'name' => $request->name,
 
-    ];
+            'message' => $request->message,
 
-    Mail::to($request->email)->send(new ContactMail($mailData));
-    return redirect()->back()->with('status', 'Send your mail successfully.');
-   }
-   // update contact info
-   public function updateContactInfo()
-   {
-    $info = ContactInfo::first();
-    return view('backend.pages.edit-contact-info', compact('info'));
-   }
-   // update contact info status
-   public function updateContactInfoStatus(Request $request)
-   {
+        ];
+
+        Mail::to($request->email)->send(new ContactMail($mailData));
+        return redirect()->back()->with('status', 'Send your mail successfully.');
+    }
+    // update contact info
+    public function updateContactInfo()
+    {
+        $info = ContactInfo::first();
+        return view('backend.pages.edit-contact-info', compact('info'));
+    }
+    // update contact info status
+    public function updateContactInfoStatus(Request $request)
+    {
         $contact_info = ContactInfo::find($request->id);
 
         if ($contact_info) {
@@ -63,27 +73,28 @@ class ContactController extends Controller
                 'twitter' => $request->twitter,
                 'description' => $request->description,
             ]);
-        
+
             // Handle the photo upload
             $photo = $request->file('photo');
             $slug = Str::slug($request->company_name, '-');
-        
+
             if ($photo) {
 
                 if ($request->old_photo && File::exists(public_path($request->old_photo))) {
                     File::delete(public_path($request->old_photo));
                 }
-                
+
                 $extension = $photo->getClientOriginalExtension();
                 $fileNameToStore = $slug . '_' . time() . '.' . $extension; // Filename to store
                 $destinationPath = 'files/contact_info';
                 $photo->move(public_path($destinationPath), $fileNameToStore);
-        
+
                 // Update the photo field
                 $contact_info->photo = $destinationPath . '/' . $fileNameToStore;
                 $contact_info->save();
             }
         }
-        return redirect()->back()->with('infostatus', 'Contact infos updated successfully.');
-   }
+        return redirect()->route('contact.index')->with('infostatus', 'Contact infos updated successfully');
+    
+    }
 }
