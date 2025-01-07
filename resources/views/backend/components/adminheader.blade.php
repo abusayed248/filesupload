@@ -52,6 +52,14 @@
                                 <li><a class="dropdown-item" href="{{ route('contact.index') }}">View Contacts Info</a></li>
                                 <li><a class="dropdown-item" href="{{ route('update.contact.info') }}">Edit Contacts Info</a></li>
                             </ul>
+
+                            <ul class="dropdown-menu" aria-labelledby="termsDropdown">
+                                <li><a class="dropdown-item" href="{{ route('terms.index') }}">View Terms</a></li>
+
+                                <li><a class="dropdown-item" href="{{ route('terms.edit') }}">Edit Terms</a></li>
+                            </ul>
+
+                            
                             @endif
                         </li>
 

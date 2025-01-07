@@ -166,7 +166,8 @@ class MagicLinkController extends Controller
         // Attempt to authenticate
         if (Auth::attempt($request->only('email', 'password'), $request->remember)) {
             // Redirect to intended URL or default dashboard
-            return view('admin.dashboard');
+    
+            return redirect()->route('admin.dashboard');
         }
 
         throw ValidationException::withMessages([
@@ -174,6 +175,10 @@ class MagicLinkController extends Controller
         ]);
     }
 
+    public function getDashboard()
+    {
+        return view('admin.dashboard');
+    }
 
     public function adminLogin()
     {

@@ -73,6 +73,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('admin/dashboard', [MagicLinkController::class, 'getDashboard'])->name('admin.dashboard');
+
     Route::get('all-files', [UploadController::class, 'showFilesByFolder'])->name('files.index');
     Route::get('/files/download/{filePath}', [UploadController::class, 'downloadFile'])->name('files.download');
 
@@ -86,6 +88,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::post('admin/login', [MagicLinkController::class, 'adminLoginStore'])->name('admin-login');
+
 
 Route::get('/login', [MagicLinkController::class, 'login']);
 Route::get('admin/login', [MagicLinkController::class, 'adminLogin']);
