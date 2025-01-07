@@ -7,17 +7,11 @@ use Illuminate\Http\Request;
 
 class PolicyController extends Controller
 {
-    public function show()
-    {
-        $policy = Policy::where('title', 'Privacy Policy')->first();
- 
-        return view('policy.show', compact('policy'));
-    }
 
     public function edit()
     {
         $policy = Policy::where('title', 'Privacy Policy')->firstOrFail();
-        return view('policy.edit', compact('policy'));
+        return view('admin.pages.policy.edit', compact('policy'));
     }
 
     public function update(Request $request)
@@ -25,6 +19,6 @@ class PolicyController extends Controller
         $policy = Policy::where('title', 'Privacy Policy')->firstOrFail();
         $policy->update(['content' => $request->input('content')]);
 
-        return redirect()->route('privacy-policy.index')->with('success', 'Privacy Policy updated successfully.');
+        return redirect()->back()->with('success', 'Privacy Policy updated successfully.');
     }
 }

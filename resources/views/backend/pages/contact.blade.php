@@ -52,7 +52,10 @@
             <div class="col-md-5 ">
                 <div class="mt-5 p-4 gap-10">
 
-
+                    <h5 class=" border-bottom pb-3">Contact Form</h5>
+                    <div class="footLogo con_logo">
+                        <img class="img-fluid" src="{{ asset($contact_info->photo) }}" alt="">
+                    </div>
 
                     <p class="text-center">@isset ($contact_info->description ) {{ $contact_info->description }} @endisset</p>
 

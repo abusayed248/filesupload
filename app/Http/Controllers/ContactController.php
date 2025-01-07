@@ -94,7 +94,7 @@ class ContactController extends Controller
                 $contact_info->save();
             }
         }
-        return redirect()->route('contact.index')->with('infostatus', 'Contact infos updated successfully');
+        return redirect()->back()->with('infostatus', 'Contact infos updated successfully');
     
     }
 }
