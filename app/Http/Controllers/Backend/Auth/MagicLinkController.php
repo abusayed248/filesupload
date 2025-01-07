@@ -166,7 +166,7 @@ class MagicLinkController extends Controller
         // Attempt to authenticate
         if (Auth::attempt($request->only('email', 'password'), $request->remember)) {
             // Redirect to intended URL or default dashboard
-            return redirect()->route('allfiles.index');
+            return view('admin.dashboard');
         }
 
         throw ValidationException::withMessages([
