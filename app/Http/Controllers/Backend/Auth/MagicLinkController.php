@@ -166,7 +166,7 @@ class MagicLinkController extends Controller
         // Attempt to authenticate
         if (Auth::attempt($request->only('email', 'password'), $request->remember)) {
             // Redirect to intended URL or default dashboard
-    
+
             return redirect()->route('admin.dashboard');
         }
 
@@ -182,8 +182,8 @@ class MagicLinkController extends Controller
 
     public function adminLogin()
     {
-        if (auth()->check()) {
-            return redirect()->route('home'); // Replace 'dashboard' with your actual route name
+        if (auth()->check() && auth()->user()->role == 'admin') {
+            return redirect()->route('admin.dashboard'); // Replace 'dashboard' with your actual route name
         }
         return view('auth.login-email');
     }

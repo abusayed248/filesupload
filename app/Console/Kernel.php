@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('chunks:delete')->everyMinute();
+        $schedule->command('chunks:delete')->dailyAt('00:00');
     }
 
     /**
