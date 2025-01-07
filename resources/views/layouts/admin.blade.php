@@ -1,24 +1,3 @@
-{{-- <body> --}}
-
-
-
-
-
-{{-- header section start --}}
-{{-- @include('backend.components.adminheader') --}}
-{{-- header section end --}}
-
-
-{{-- @yield('content') --}}
-
-{{-- footer section start --}}
-{{-- @include('backend.components.adminfooter') --}}
-{{-- footer section end --}}
-
-
-{{-- </body> --}}
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,6 +21,13 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('files') }}/css/style.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11403635670"></script>
     <script>
@@ -76,6 +62,8 @@
 
 <body>
 
+    
+
     <div class="sb-nav-fixed">
 
         <!-- Google Tag Manager (noscript) -->
@@ -108,7 +96,7 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="index.html">
+                            <a class="nav-link" href="{{ route('admin.dashboard') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
@@ -120,10 +108,32 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ route('privacy-policy.index') }}">View</a>
                                     <a class="nav-link" href="{{ route('policy.edit') }}">Edit</a>
                                 </nav>
                             </div>
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#faq" aria-expanded="false" aria-controls="faq">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Testimonials
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="faq" aria-labelledby="faq" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ route('all.testimonials') }}">All Testimonial</a>
+                                </nav>
+                            </div>
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#faq" aria-expanded="false" aria-controls="faq">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Faq
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="faq" aria-labelledby="faq" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ route('all.faqs') }}">All Faqs</a>
+                                </nav>
+                            </div>
+
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                                 Terms  & contact
@@ -137,7 +147,6 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="{{ route('terms.index') }}">View Terms</a>
                                             <a class="nav-link" href="{{ route('terms.edit') }}">Edit Terms</a>
                                         </nav>
                                     </div>
@@ -145,12 +154,13 @@
                                         Contact Info
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
+
                                     <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="{{ route('contact.index') }}"> View Contacts Info</a>
                                             <a class="nav-link" href="{{ route('update.contact.info') }}"> Edit Contacts Info</a>
                                         </nav>
                                     </div>
+
                                 </nav>
                             </div>
                         </div>

@@ -8,6 +8,7 @@ use App\Http\Controllers\UploadController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Backend\FileUploadController;
 use App\Http\Controllers\Backend\Auth\MagicLinkController;
+use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\TermsController;
 
 /*
@@ -85,6 +86,23 @@ Route::middleware(['auth'])->group(function () {
     Route::get('admin/folder-files', [UploadController::class, 'showAllFileFolder'])->name('allfiles.index');
 
     Route::delete('files/{fileId}/delete', [UploadController::class, 'deleteFile'])->name('files.delete');
+
+    // faq
+    Route::get('all-faqs', [FaqController::class, 'faq'])->name('all.faqs');
+    Route::get('add-faq', [FaqController::class, 'addFaq'])->name('add.faq');
+    Route::post('store-faq', [FaqController::class, 'storeFaq'])->name('store.faq');
+    Route::get('edit-faq/{id}', [FaqController::class, 'editFaq'])->name('edit.faq');
+    Route::get('delete-faq/{id}', [FaqController::class, 'deleteFaq'])->name('delete.faq');
+    Route::post('update-faq/{id}', [FaqController::class, 'updateFaq'])->name('update.faq');
+
+    // testimonials
+    Route::get('all-testimonials', [FaqController::class, 'index'])->name('all.testimonials');
+    Route::get('add-testimonial', [FaqController::class, 'addTestimonial'])->name('add.testimonial');
+    Route::post('store-testimonial', [FaqController::class, 'storeTestimonial'])->name('store.testimonial');
+    Route::get('edit-testimonial/{id}', [FaqController::class, 'editTestimonial'])->name('edit.testimonial');
+    Route::post('update-testimonial/{id}', [FaqController::class, 'updateTestimonial'])->name('update.testimonial');
+    Route::get('delete-testimonial/{id}', [FaqController::class, 'deleteTestimonial'])->name('delete.testimonial');
+    
 });
 
 Route::post('admin/login', [MagicLinkController::class, 'adminLoginStore'])->name('admin-login');

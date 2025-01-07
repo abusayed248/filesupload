@@ -7,25 +7,21 @@ use Illuminate\Http\Request;
 
 class TermsController extends Controller
 {
-    public function show()
-    {
-        $terms = Terms::query()->first();
-        return view('terms.show', compact('terms'));
-    }
+    
 
     public function edit()
     {
         $terms = Terms::query()->first();
-        return view('terms.edit', compact('terms'));
+        return view('admin.pages.terms.edit', compact('terms'));
     }
 
     public function update(Request $request)
     {
         $terms = Terms::query()->first();
         $terms->update(['content' => $request->input('content'),
-    'title' => $request->input('title'),
-    ]);
+            'title' => $request->input('title'),
+        ]);
 
-        return redirect()->route('terms.index')->with('success', 'Privacy Terms updated successfully.');
+        return redirect()->back()->with('success', 'Privacy Terms updated successfully.');
     }
 }

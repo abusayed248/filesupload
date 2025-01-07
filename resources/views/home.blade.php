@@ -96,34 +96,16 @@
         <div class="container mt-5">
             <h1 class="text-center titel2">FAQ</h1>
             <div class="row">
+                @php
+                    $faqs = \App\Models\Faq::paginate(6);
+                @endphp
+
+                @foreach ($faqs as $faq)
                 <div class="col-md-4 p-5">
-                    <h4 class="text-center titel2">Is it free?</h4>
-                    <p>Yes, uploading your files is completely free. Free users can upload files up to 10 GB, with a storage duration of up to 30 days. For larger file sizes (up to 1 TB) and permanent storage, you can upgrade to a premium account.</p>
+                    <h4 class="text-center titel2">{{ $faq->title }}</h4>
+                    <p>{{ $faq->description }}</p>
                 </div>
-                <div class="col-md-4 p-5">
-                    <h4 class="text-center titel2">What can I upload?</h4>
-                    <p>You can upload any legal files. We strictly adhere to laws and our terms of use, so any file that violates these rules will be deleted immediately, and your account may be permanently suspended without prior notice.</p>
-                </div>
-                <div class="col-md-4 p-5">
-                    <h4 class="text-center titel2">How do I share?</h4>
-                    <p class="">Sharing your files is simple. Once your upload is complete, a download link will be generated. Share this link with others, and they can easily download your files via the provided link.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 p-5">
-                    <h4 class="text-center titel2">Are there download limits?</h4>
-                    <p>There are no limits on the number of downloads per file. However, files will no longer be available once they expire or are deleted.
-                    </p>
-                </div>
-                <div class="col-md-4 p-5">
-                    <h4 class="text-center titel2">Why was my file deleted?</h4>
-                    <p>Files may be deleted if they violate any laws or our terms of use. Additionally, free users’ files will expire 30 days after upload unless upgraded to a premium account. </p>
-                </div>
-                <div class="col-md-4 p-5">
-                    <h4 class="text-center titel2">How can I report a file?</h4>
-                    <p class="">To report a file that you believe violates laws or our terms of use, use the "Report File" link available on the file's download page. Alternatively, you can contact us through the "Contact Us" menu for assistance.
-                    </p>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -169,33 +151,22 @@
     <section class="mtop">
         <div class="container">
             <div class="row">
+            @php
+                $testimonials = \App\Models\Testimonial::paginate(3);
+            @endphp
+
+            @foreach ($testimonials as $testimonial)
+
                 <div class="col-md-4 d-flex justify-content-center flex-column align-items-center p-3">
                     <div class="woman_img">
-                        <img class="cline_img" src="{{ asset('files') }}/static_img/3.png" alt="">
+                        <img class="cline_img" src="{{ asset($testimonial->photo) }}" alt="">
                     </div>
-                    <h4 class="text-center titel3 pt-3 ">Veronica D.</h4>
-                    <p class="pt-3 pb-3">Uploading files is absolutely free! As a free user, you can upload files up to 10 GB, which will be stored for up to 30 days. Want more? Upgrade to a premium account to enjoy increased storage up to 500 GB and keep your files saved forever.
+                    <h4 class="text-center titel3 pt-3 ">{{ $testimonial->name }}</h4>
+                    <p class="pt-3 pb-3">{{ $testimonial->description }}
                     </p>
                     <img src="./img/quote.png" alt="" srcset="">
                 </div>
-                <div class="col-md-4 d-flex justify-content-center flex-column align-items-center p-3">
-                    <div class="woman_img">
-                        <img class="cline_img" src="{{ asset('files') }}/static_img/2.webp" alt="">
-                    </div>
-                    <h4 class="text-center titel3 pt-3 ">Eva N.</h4>
-                    <p class="pt-3 pb-3">Uploading files is easy and free! Free users can upload files up to 10 GB, with a storage period of 30 days. Need more space and longer storage? Get a premium account for up to 500 GB and unlimited storage time.
-                    </p>
-                    <img src="./img/quote.png" alt="" srcset="">
-                </div>
-                <div class="col-md-4 d-flex justify-content-center flex-column align-items-center p-3">
-                    <div class="woman_img">
-                        <img class="cline_img" src="{{ asset('files') }}//static_img/1.png" alt="">
-                    </div>
-                    <h4 class="text-center titel3 pt-3 ">Boris V.</h4>
-                    <p class="pt-3 pb-3">Yes, uploading files is free! Free users can upload files up to 10 GB, stored for 30 days. To unlock more features, a premium account offers file uploads up to 500 GB with permanent storage.
-                    </p>
-                    <img src="{{ asset('files') }}/img/quote.png" alt="" srcset="">
-                </div>
+            @endforeach    
             </div>
         </div>
     </section>
