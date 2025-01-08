@@ -231,7 +231,9 @@
                     <h6 class="mb-4">There are no users.</h6>
                 </div>
                 @endforelse
-
+                <div class="d-flex justify-content-center ">
+                    {!! $news->withQueryString()->links('pagination::bootstrap-5') !!}
+                </div>
             </div>
 
             
