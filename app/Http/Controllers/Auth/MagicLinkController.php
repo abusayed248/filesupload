@@ -115,4 +115,13 @@ class MagicLinkController extends Controller
 
         return redirect()->route('login')->with('status', 'You have been successfully logged out.');
     }
+    public function adminDestroy(Request $request)
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('admin-login')->with('status', 'You have been successfully logged out.');
+    }
 }

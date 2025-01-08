@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <h2>Faq</h2>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6  d-flex justify-content-end mb-3">
             <a href="{{ route('add.testimonial') }}" class="btn btn-success">Add+</a>
         </div>
     </div>

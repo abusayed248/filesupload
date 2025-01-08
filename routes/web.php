@@ -73,6 +73,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('auth.redirect')->post('/logout', [MagicLinkController::class, 'destroy'])->name('logout');
 });
 
+
 Route::middleware(['auth'])->group(function () {
     Route::get('admin/dashboard', [MagicLinkController::class, 'getDashboard'])->name('admin.dashboard');
 

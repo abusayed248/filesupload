@@ -36,22 +36,23 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12 d-flex align-items-center">
-                        <label class="mx-2" for="email">Email *</label>
-                        <input id="email" type="email" name="email" class="validate" required="" data-length="100" maxlength="100" value="{{ old('email') }}">
+                        <label class="mx-2 col-2" for="email">Email *</label>
+                        <input id="email" type="email" name="email" class="validate col-10" required="" data-length="100" maxlength="100" value="{{ old('email') }}">
                         <span class="character-counter" style="float: right; font-size: 12px;"></span>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s12 d-flex align-items-center m-2">
-                        <label class="mx-2" for="password">Password *</label>
-                        <input id="password" type="password" name="password" class="validate" required="" data-length="100" maxlength="100">
+                    <div class="input-field col s12 d-flex align-items-center mt-3">
+                        <label class="mx-2 col-2" for="password">Password *</label>
+                        <input id="password" type="password" name="password" class="validate col-10" required="" data-length="100" maxlength="100">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="input-field col s12 d-flex justify-content-center">
-                        <button id="login" type="submit" class="waves-effect btn" name="login" value="login">Login</button>
+               <div class="input-field col s12 d-flex justify-content-center align-items-center mt-3">
+                       <div class="col-10">
+                            <button id="login" type="submit" class="waves-effect btn w-100" name="login" value="login">Login</button>
+                        </div>
                     </div>
-                </div>
+             
             </form>
         </div>
     </div>
