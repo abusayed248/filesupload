@@ -214,67 +214,27 @@
         <div class="container">
             <h3 class="text-center">Latest News</h3>
             <div class="row">
+                @php
+                $news = \App\Models\News::paginate(4);
+                @endphp
+
+                @forelse($news as $item)
                 <div class="py-5 col-md-6">
-                    <span class="fw-light">21/03/2023 06.11 UTC</span>
-                    <h6 class="mb-4 fst-italic">Influencer Premium Plan Available</h6>
+                    <span class="fw-light">{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y')}}</span>
+                    <h6 class="mb-4 fst-italic">{{ $item->title }}</h6>
                     <p class="fw-light">
-
-                        FilesUpload.io now offers influencer premium plans for people who share popular files with their followers, friends etc. With this plan, influencer files can be uploaded at maximum speed without any extra charge for downloaders.
-
-                        <span class="d-block py-3">Influencers will also benefit from premium plan features for free for unlimited time. If you are generating high number of downloads with your files, you can contact us for an influencer plan.</span>
-
-                        <span class="d-block py-2">Get on board with us!</span>
-                        <span class="d-block py-2">Best,</span>
+                        {!! $item->description !!}
                     </p>
-                    <h6>John H.</h6>
                 </div>
-
-                <div class="py-5 col-md-6">
-                    <span class="fw-light">28/01/2020 17.11 UTC</span>
-                    <h6 class="mb-4 fst-italic">Why choose cloud services for file and data storage?
-                    </h6>
-                    <p class="fw-light">
-                        File and data storage is one of the most popular concepts nowadays. Keeping the data and files secure is essential for any person or company because they are the most important piece of the puzzle. Many companies say the same sentence over and over : "Data is money". So, to secure these data and keep the files intact, using a cloud storage is the most secure way when compared to hardware solutions: They can be damaged, corrupted, stolen or lost easily but with cloud storage you can be sure that your files and data are only available to you, are always there and secured for you.
-
-
-                        <span class="d-block py-3">FilesUpload.io offer this for companies and individuals. With an advanced control-panel, users can keep track of their files, send them to any friend or colleague when needed with one-click. Other options like hardware storage makes these more complicated for everyone and it is not safe. Servers on cloud storage are mostly backed-up for any data loss and they are 7/24 monitored for any kind of attack or problem. Also keep in mind that biggest companies today use cloud solutions over hardware solutions.
-                        </span>
-
-                        <span class="d-block py-2">So, catch the trend and use cloud storage!</span>
-                        <span class="d-block py-2">Have a good day !</span>
-                    </p>
-                    <h6>Marry H.</h6>
+                @empty
+                <div class="py-5 col-md-12">
+                    <h6 class="mb-4">There are no users.</h6>
                 </div>
+                @endforelse
 
             </div>
 
-            <div class="row">
-                <div class="py-5 col-md-6">
-                    <span class="fw-light">17/11/2019 12.54 UTC</span>
-                    <h6 class="mb-4 fst-italic">PC Security</h6>
-                    <p class="fw-light">Security concerns associated with cloud computing fall into two categories: security issues faced by cloud providers and by their customers. The responsibility is shared, however. The provider must ensure that their infrastructure is secure and that their clients’ data and applications are protected, while the user must take measures to fortify their application and use strong passwords and authentication measures.
-                        <span class="d-block py-3">"To focus on the customer side, first of all, users have to be sure that the device they are using must not be compromised and they are secure to use. Any malware or virus in the computer can leak your password and files to 3rd parties. Using a powerful antivirus may help you protect your files and your computer. Also, users must not use shared computers or public wifi because passwords can easily be stolen.
-                        </span>
-
-                        <span class="d-block py-2">Have a good day !</span>
-                    </p>
-                    <h6>Michael S.</h6>
-                </div>
-
-                <div class="col-md-6">
-                    <span class="fw-light">16/10/2019 14.19 UTC
-                    </span>
-                    <h6 class="mb-4 fst-italic">What kind of files can be uploaded?</h6>
-                    <p class="fw-light">All kinds of files that is not legal to share or upload should be avoided by all filesupload.io users. Filesupload.io is so strict about the legal issues and does not permit any illegal file including but not limited to: Adult Content, Child Abuse, Movies, Games or any kind of copyrighted material.
-                        <span class="d-block py-3">Filesupload.io makes regular checks for uploaded files and take the necessary actions if any violation is made. We also have report mechanisms for uploaded files where you can report any file that you think it is violating the terms of use and law. We instantly delete and block the related url, and block the user account if necessary.
-                        </span>
-                        <span class="d-block py-3">We are offering a free service for people to share their files and store their files, only condition is to keep them legal!</span>
-
-                        <span class="d-block py-2">Have a good day !</span>
-                    </p>
-                    <h6>Marry H.</h6>
-                </div>
-            </div>
+            
         </div>
         </div>
     </section>

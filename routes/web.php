@@ -103,6 +103,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('edit-testimonial/{id}', [FaqController::class, 'editTestimonial'])->name('edit.testimonial');
     Route::post('update-testimonial/{id}', [FaqController::class, 'updateTestimonial'])->name('update.testimonial');
     Route::get('delete-testimonial/{id}', [FaqController::class, 'deleteTestimonial'])->name('delete.testimonial');
+
+    // news
+    Route::get('add-news', [FaqController::class, 'addNews'])->name('add.news');
+    Route::post('store-news', [FaqController::class, 'storeNews'])->name('store.news');
+    Route::get('edit-news/{id}', [FaqController::class, 'editNews'])->name('edit.news');
+    Route::post('update-news/{id}', [FaqController::class, 'updateNews'])->name('update.news');
+    Route::get('delete-news/{id}', [FaqController::class, 'deleteNews'])->name('delete.news');
     
 });
 

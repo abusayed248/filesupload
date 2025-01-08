@@ -34,7 +34,7 @@
                   @endif
 
                   <label for="name" class="form-label">Photo</label>
-                  <input type="file" class="form-control border" id="photo" name="photo" required>
+                  <input type="file" class="form-control border" id="photo" name="photo" >
                 </div>
 
                 <div class="mb-3">
