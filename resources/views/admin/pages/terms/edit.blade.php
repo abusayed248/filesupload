@@ -30,7 +30,7 @@
                         rows="3"
                         class="mb-3 d-none"
                         name="content"
-                        id="quill-editor-area">ddddddddddddd{{ old('content', $terms->content) }}</textarea>
+                        id="quill-editor-area">{{ old('content', $terms->content) }}</textarea>
 
 
                     @error('content')

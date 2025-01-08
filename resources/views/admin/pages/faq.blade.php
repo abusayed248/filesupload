@@ -16,7 +16,7 @@
                 <th>Sl</th>
                 <th>Title</th>
                 <th>Description</th>
-                <th>Action</th>
+                <th colspan="2">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -25,7 +25,7 @@
                     <td>{{ ++$key }}</td>
                     <td>{{ $faq->title }}</td>
                     <td>{{ Str::of($faq->description)->limit(100)}}</td>
-                    <td colspan="2">
+                    <td>
                         <a href="{{ route('edit.faq', $faq->id) }}" class="btn btn-success">Edit</a>
                         <a href="{{ route('delete.faq', $faq->id) }}" class="btn btn-danger">Delete</a>
                     </td>

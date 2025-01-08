@@ -1,60 +1,51 @@
 @extends('layouts.admin')
 
-@section('title', 'Admin dashboard')
+@section('title', 'Filesupload dashboard')
 @section('content')
 <main>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Dashboard</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-       
+       <div class="row">
+        <div class="col-md-10">
+            <h1 class="mt-4">Dashboard</h1>
+        </div>
+        <div class="col-md-2 text-end">
+            <a href="{{ route('add.news') }}" class="btn btn-success">Add+</a>
+        </div>
+       </div>
+
+@php
+$news = \App\Models\News::get();
+@endphp
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
-                DataTable Example
+                News
             </div>
             <div class="card-body">
                 <table id="datatablesSimple">
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Age</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Created date</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Age</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </tfoot>
+                   
                     <tbody>
+                        @foreach($news as $key => $item)
                         <tr>
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                            <td>Edinburgh</td>
-                            <td>61</td>
-                            <td>2011/04/25</td>
-                            <td>$320,800</td>
+                            <td>{{ ++$key }}</td>
+                            <td>{{ $item->title }}</td>
+                            <td>{!! Str::of($item->description)->limit(150) !!}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y')}}</td>
+                            <td>
+                                <a href="{{ route('edit.news', $item->id) }}" class="btn btn-success">Edit</a>
+                                <a href="{{ route('delete.news', $item->id) }}" class="btn btn-danger">Delete</a>
+                            </td>
                         </tr>
-                       
-                        <tr>
-                            <td>Rhona Davidson</td>
-                            <td>Integration Specialist</td>
-                            <td>Tokyo</td>
-                            <td>55</td>
-                            <td>2010/10/14</td>
-                            <td>$327,900</td>
-                        </tr>
-                        
+                       @endforeach
                     </tbody>
                 </table>
             </div>

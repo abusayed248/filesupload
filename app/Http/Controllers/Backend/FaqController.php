@@ -7,6 +7,7 @@ use App\Models\Testimonial;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\News;
 use Illuminate\Support\Facades\File;
 
 class FaqController extends Controller
@@ -127,5 +128,31 @@ class FaqController extends Controller
         $faq = Faq::find($id);
         $faq->update($request->all());
         return redirect()->back()->with('status', 'Data deleted successfully.');
+    }
+
+
+    //=================== news start =================//
+    public function addNews() {
+        return view('admin.pages.news.add');
+    }
+
+    public function storeNews(Request $request) {
+        News::create($request->all());
+        return redirect()->back()->with('status', 'News added successfully');
+    }
+
+    public function updateNews(Request $request, $id) {
+        $news = News::find($id);
+        $news->update($request->all());
+        return redirect()->back()->with('status', 'News updated successfully');
+    }
+    public function editNews($id) {
+        $news = News::find($id);
+        return view('admin.pages.news.edit', compact('news'));
+    }
+    public function deleteNews($id) {
+        $news = News::find($id);
+        $news->delete();
+        return redirect()->back()->with('status', 'News deleted successfully');
     }
 }
