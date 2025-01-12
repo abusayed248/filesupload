@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('track_files', function (Blueprint $table) {
             $table->id();
-            $table->string('filepath')->nullable();
+            $table->text('filepath')->nullable();
             $table->foreignId('file_upload_id')->constrained()->nullable();
             $table->bigInteger('expires_at')->nullable();
             $table->string('password')->nullable();
