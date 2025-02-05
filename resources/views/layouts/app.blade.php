@@ -92,7 +92,7 @@
                 'zip', 'rar', '7z', 'tar', 'gz',
                 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt',
                 'html', 'css', 'js', 'json', 'xml', 'sql', 'py', 'java', 'php', 'c', 'cpp', 'cs', 'rb', 'go', 'ts',
-                'apk', 'exe', 'dll', 'iso', 'dmg'
+                'apk', 'dll', 'iso', 'dmg'
             ],
             chunkSize: 2 * 1024 * 1024, // 2 MB chunks
             headers: {
